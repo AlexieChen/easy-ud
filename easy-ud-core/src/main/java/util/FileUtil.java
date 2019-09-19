@@ -9,16 +9,22 @@ import java.security.MessageDigest;
 /**
  * @Auther: "Chenzx"
  * @Date: 2019/9/18 14:30
- * @Description:
+ * @Description:文件工具类
  */
 public class FileUtil {
-    //获取文件md5值
+    /**
+     * @return:
+     * @author: ChenZx
+     * @Param: file-文件
+     * @description: 获取文件md5值
+     * @date: 2019/9/19 13:28
+     */
     public static String getFileMD5(File file) {
         if (!file.exists() || !file.isFile()) {
             return null;
         }
-        MessageDigest digest = null;
-        FileInputStream in = null;
+        MessageDigest digest;
+        FileInputStream in;
         byte buffer[] = new byte[1024];
         int len;
         try {

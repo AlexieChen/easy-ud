@@ -32,7 +32,6 @@
 		<swagger.version>2.9.2</swagger.version>
 		<kotlin.version>1.3.30</kotlin.version>
 		<sucsoft.kotlin.version>1.3.20.0</sucsoft.kotlin.version>
-
 	</properties>
 
 	<dependencies>
@@ -87,80 +86,9 @@
 			<version>0.0.11.3-RELEASE</version>
 		</dependency>
 		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>1.2.41</version>
-		</dependency>
-		<dependency>
-			<groupId>com.cgs</groupId>
-			<artifactId>authox-starter-vue</artifactId>
-			<version>1.1.3.5</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>ac-commons</artifactId>
-					<groupId>com.cgs</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>springfox-swagger2</artifactId>
-					<groupId>io.springfox</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>springfox-swagger-ui</artifactId>
-					<groupId>io.springfox</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.sucsoft.jt</groupId>
-			<artifactId>ac-jt-util</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sucsoft.jt</groupId>
-			<artifactId>ac-jt-dview</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>kotlin-reflect</artifactId>
-					<groupId>org.jetbrains.kotlin</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
 			<groupId>com.cgs.log.stack</groupId>
 			<artifactId>common-log-starter</artifactId>
 			<version>0.0.3-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sucsoft</groupId>
-			<artifactId>kotlin-commons</artifactId>
-			<version>${sucsoft.kotlin.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>kotlin-stdlib</artifactId>
-					<groupId>org.jetbrains.kotlin</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>kotlin-stdlib-common</artifactId>
-					<groupId>org.jetbrains.kotlin</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>com.sucsoft.ui</groupId>
-			<artifactId>ueditor</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jetbrains.kotlin</groupId>
-			<artifactId>kotlin-stdlib-jdk8</artifactId>
-			<version>${kotlin.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jetbrains.kotlin</groupId>
-			<artifactId>kotlin-test</artifactId>
-			<version>${kotlin.version}</version>
-			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<build>

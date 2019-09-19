@@ -1,11 +1,8 @@
 package util;
 
-import exception.MyFileNotFoundException;
-import sun.plugin2.message.Message;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 

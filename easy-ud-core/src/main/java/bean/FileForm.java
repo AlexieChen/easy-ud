@@ -12,7 +12,7 @@ import java.util.Date;
  * @Description:
  */
 @ApiModel("文件上传表单")
-public class fileform {
+public class FileForm {
     @ApiModelProperty("文件md5")
     private String md5;
     @ApiModelProperty("时间")

@@ -8,7 +8,7 @@ import org.springframework.lang.Nullable;
 import java.util.Date;
 
 /**
- * @Author: "Chenzx"
+ * @Author: "YangJJ"
  * @Date: 2019/9/18 13:23
  * @Description:
  */
@@ -34,7 +34,7 @@ public class FileInfo {
                 ", fileSize=" + fileSize +
                 ", filePath='" + filePath + '\'' +
                 ", fileStatus='" + fileStatus + '\'' +
-                ", Id='" + Id + '\'' +
+                ", id='" + id + '\'' +
                 '}';
     }
 
@@ -60,8 +60,8 @@ public class FileInfo {
 
     @ApiModelProperty("文件状态，0未完成，1已完成")
     private String fileStatus;
-    @ApiModelProperty("Id")
-    private String Id;
+    @ApiModelProperty("id")
+    private String id;
 
     public String getMd5() {
         return md5;
@@ -97,10 +97,10 @@ public class FileInfo {
     }
 
     public String getId() {
-        return Id;
+        return id;
     }
 
     public void setId(String id) {
-        Id = id;
+        id = id;
     }
 }

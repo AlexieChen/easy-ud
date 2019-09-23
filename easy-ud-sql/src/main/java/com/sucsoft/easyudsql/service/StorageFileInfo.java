@@ -1,7 +1,7 @@
 package com.sucsoft.easyudsql.service;
 
-import bean.FileInfo;
-import bean.Fileform;
+import com.sucsoft.easyudsql.bean.FileInfo;
+import com.sucsoft.easyudsql.bean.Fileform;
 import com.sucsoft.jt.acjtutil.JtIdCreateUtil;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
-import util.SqlSessionUtil;
 
 import java.io.*;
 import java.util.Date;

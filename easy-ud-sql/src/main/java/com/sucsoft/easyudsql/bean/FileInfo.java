@@ -1,4 +1,4 @@
-package bean;
+package com.sucsoft.easyudsql.bean;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
@@ -8,7 +8,7 @@ import org.springframework.lang.Nullable;
 import java.util.Date;
 
 /**
- * @Auther: "Chenzx"
+ * @Author: "Chenzx"
  * @Date: 2019/9/18 13:23
  * @Description:
  */

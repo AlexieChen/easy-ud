@@ -18,17 +18,17 @@ public class FileResponse {
     private String id;
     @ApiModelProperty("md5")
     private String md5;
-    @ApiModelProperty("报错信息")
-    private String message;
+    @ApiModelProperty("文件上传状态")
+    private Integer status;
 
     public FileResponse() {
     }
 
-    public FileResponse(String fileName, String uploadPath, String md5, String message) {
+    public FileResponse(String fileName, String uploadPath, String md5, Integer status) {
         this.fileName = fileName;
         this.uploadPath = uploadPath;
         this.md5 = md5;
-        this.message = message;
+        this.status = status;
     }
 
     public String getFileName() {
@@ -55,15 +55,19 @@ public class FileResponse {
         this.id = id;
     }
 
-    public String getMd5() { return md5; }
-
-    public void setMd5(String md5) { this.md5 = md5; }
-
-    public String getMessage() {
-        return message;
+    public String getMd5() {
+        return md5;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMd5(String md5) {
+        this.md5 = md5;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

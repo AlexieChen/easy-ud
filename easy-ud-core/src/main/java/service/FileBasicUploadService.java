@@ -1,7 +1,9 @@
 package service;
 
 import bean.FileResponse;
-import org.apache.commons.lang.StringUtils;
+import bean.FileUploadStatus;
+import exception.FileUploadException;
+import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,68 +11,97 @@ import util.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.*;
 
 /**
- * @Auther: "Chenzx"
- * @Date: 2019/9/19 09:32
- * @Description:
+ * @author: "Chenzx"
+ * @date: 2019/9/19 09:32
+ * @description:
  */
 @Service
 public class FileBasicUploadService {
-    @Value("/usr/upload/")
+    @Value("${fileUploadFolder}")
     private String filePath;
-    //存储上传的文件信息，key为文件的md5值，value为文件信息FileResponse
-    public Map<String, FileResponse> fileInfoMap = new HashMap();
+    /**
+     * @return:
+     * @author: ChenZx
+     * @description: 存储上传的文件信息，key为文件的md5值，value为文件信息FileResponse
+     * @date: 2019/9/20 11:34
+     */
+    public Map<String, FileResponse> fileInfoMap;
 
+    /**
+     * @return:
+     * @author: ChenZx
+     * @description: 基本文件上传
+     * @date: 2019/9/20 13:08
+     */
     public FileResponse upload(MultipartFile file, String uploadDir) throws IOException {
-        FileResponse fileResponse = new FileResponse();
-        String fileOriginalName =file.getOriginalFilename();
-        Integer lastIndexOfDot =fileOriginalName.lastIndexOf(".");
+        FileResponse fileResponse;
+        Integer lastIndexOfDot = file.getOriginalFilename().lastIndexOf(".");
         //文件后缀
-        String suffix =fileOriginalName.substring(lastIndexOfDot);
+        String suffix = file.getOriginalFilename().substring(lastIndexOfDot);
         //文件名除去后缀
-        String fileName = fileOriginalName.substring(0, lastIndexOfDot);
-        //文件放到随机生成的id，防止重名
+        String fileName = file.getOriginalFilename().substring(0, lastIndexOfDot);
+        //文件由随机生成的id做服务器端文件名，防止重名文件出现
         String id = UUID.randomUUID().toString();
         try {
-
-            //String fileType = suffix.substring(1);
-
-            String[] pathList = new String[]{uploadDir, fileName, suffix};
+            String[] pathList = new String[]{uploadDir, id, suffix};
             //文件路径拼接
             String path = StringUtils.join(pathList);
-            File dest = new File(path);
-            // 检测是否存在目录
-            if (!dest.getParentFile().exists()) {
-                // 新建目录
-                dest.getParentFile().mkdirs();
-            }
-            //int j = 1;
-/*            while (dest.exists()) {
-                fileName = fileOtherName + j + suffix
-                dest = File("$filePath$type/$fileName")
-                j++
-            }*/
-            file.transferTo(dest);
-            //获得文件的md5值
-            String md5 = FileUtil.getFileMD5(dest);
-            fileResponse = new FileResponse(fileName, filePath, md5, "Success");
+            fileResponse = realUpload(path,fileName,file);
             //保存成功上传的文件信息
-            fileInfoMap.put(id, fileResponse);
-        } catch (IOException e) {
+            fileInfoMap.put(fileResponse.getMd5(), fileResponse);
+        } catch (FileUploadException e) {
             e.printStackTrace();
-            fileResponse = new FileResponse(fileName, filePath, null, "Fail");
+            fileResponse = new FileResponse(fileName, filePath, null, FileUploadStatus.FILE_UPLOAD_STATUS_FAIL);
         }
         return fileResponse;
     }
-
-    public List<FileResponse> uploadFiles(List<MultipartFile> files, String uploadDir) throws Exception {
-        ArrayList<FileResponse> fileResponses = new ArrayList<FileResponse>();
+    /**
+     * @return:
+     * @author: ChenZx
+     * @description:
+     * @date: 2019/9/24 15:33
+     */
+    public FileResponse realUpload(String path,String fileName,MultipartFile file) throws IOException{
+        File dest = new File(path);
+        // 检测父目录是否存在，不存在则创建父目录
+        checkParentDir(dest);
+        file.transferTo(dest);
+        //获得文件的md5值
+        String md5 = FileUtil.getFileMD5(dest);
+        FileResponse fileResponse = new FileResponse(fileName, filePath, md5, FileUploadStatus.FILE_UPLOAD_STATUS_SUC);
+        return fileResponse;
+    }
+    /**
+     * @return:
+     * @author: ChenZx
+     * @description: 上传多个文件
+     * @date: 2019/9/20 13:09
+     */
+    public List<FileResponse> uploadFiles(List<MultipartFile> files, String uploadDir) throws IOException {
+        ArrayList<FileResponse> fileResponses = new ArrayList<>();
         for (MultipartFile file : files) {
             fileResponses.add(upload(file, uploadDir));
         }
         return fileResponses;
     }
+
+    /**
+     * @return:
+     * @author: ChenZx
+     * @description: 检查文件的父目录是否存在
+     * @date: 2019/9/20 13:09
+     */
+    public boolean checkParentDir(File path) {
+        //父目录是否存在
+        if (!path.getParentFile().exists()) {
+            // 若不存在则新建目录
+            return path.getParentFile().mkdirs();
+        } else {
+            return true;
+        }
+    }
+
 }

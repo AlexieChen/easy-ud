@@ -1,0 +1,12 @@
+server:
+  port: 8666
+spring:
+  datasource:
+    username: suc
+    password: 5tgbNHY^
+    url: jdbc:mysql://172.18.21.22:3306/nbjy?useUnicode=true&characterEncoding=utf-8&useSSL=true
+    driver-class-name: com.mysql.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:/mybatis/mapper/*.xml
+  config-location: classpath:/mybatis/config/mybatis-config.xml

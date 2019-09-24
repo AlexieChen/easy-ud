@@ -10,7 +10,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class EasyUdSqlApplicationTests {
 
 	@Test
-	public void contextLoads() {
+	public void userFindByIdTest(){
+
 	}
 
 }

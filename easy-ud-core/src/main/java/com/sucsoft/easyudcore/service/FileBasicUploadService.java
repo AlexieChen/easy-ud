@@ -6,6 +6,7 @@ import com.sucsoft.easyudcore.exception.FileUploadException;
 import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 import com.sucsoft.easyudcore.util.FileUtil;
 
@@ -85,6 +86,10 @@ public class FileBasicUploadService {
      */
     public List<FileResponse> uploadFiles(List<MultipartFile> files, String uploadDir) throws IOException {
         ArrayList<FileResponse> fileResponses = new ArrayList<>();
+        if (files.size()==0){
+            fileResponses.add(new FileResponse("wd","nm","d",1));
+            return fileResponses;
+        }
         for (MultipartFile file : files) {
             fileResponses.add(upload(file, uploadDir));
         }

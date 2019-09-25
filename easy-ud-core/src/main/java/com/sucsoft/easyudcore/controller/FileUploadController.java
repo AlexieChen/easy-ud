@@ -30,11 +30,9 @@ public class FileUploadController {
         return fileBasicUploadService.upload(file, uploadDir);
     }
 
-    @RequestMapping(value = "/upload/files", consumes = "multipart/*", headers = "content-type=multipart/form-data", method = RequestMethod.POST)
+    @PostMapping(value = "/upload/files", consumes = "multipart/*", headers = "content-type=multipart/form-data")
     @ApiOperation(value = "API-basic_upload-文档", notes = "新增文档,请参考上传管理-资源上传接口")
-    public List<FileResponse> uploadFile(@RequestPart(required = true) List<MultipartFile> files, @RequestParam String uploadDir) throws IOException {
+    public List<FileResponse> uploadFile(@RequestPart List<MultipartFile> files, @RequestParam String uploadDir) throws IOException {
         return fileBasicUploadService.uploadFiles(files, uploadDir);
     }
-
-
 }

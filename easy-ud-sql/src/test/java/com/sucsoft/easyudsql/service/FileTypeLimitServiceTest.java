@@ -16,6 +16,6 @@ public class FileTypeLimitServiceTest {
 
     @Test
     public void fileAllowable() {
-        fileTypeLimitService.fileAllowable("D:\\ningbo\\ddd.bmp");
+        fileTypeLimitService.fileAllowable("D:\\ningbo\\777.bmp");
     }
 }

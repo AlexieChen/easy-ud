@@ -35,7 +35,7 @@ public class MavenWrapperDownloader {
             "https://repo.maven.apache.org/maven2/io/takari/maven-wrapper/0.4.2/maven-wrapper-0.4.2.jar";
 
     /**
-     * Path to the maven-wrapper.properties file, which might contain a downloadUrl property to
+     * Path to the maven-wrapper.properties file, which might contain a downloadUrl com.sucsoft.easyudcore.property to
      * use instead of the default one.
      */
     private static final String MAVEN_WRAPPER_PROPERTIES_PATH =
@@ -48,7 +48,7 @@ public class MavenWrapperDownloader {
             ".mvn/wrapper/maven-wrapper.jar";
 
     /**
-     * Name of the property which should be used to override the default download url for the wrapper.
+     * Name of the com.sucsoft.easyudcore.property which should be used to override the default download url for the wrapper.
      */
     private static final String PROPERTY_NAME_WRAPPER_URL = "wrapperUrl";
 

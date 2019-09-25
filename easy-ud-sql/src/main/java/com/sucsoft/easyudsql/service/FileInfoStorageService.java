@@ -8,48 +8,48 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * @Author YangJJ
- * @Date 2019/9/20 11:20
- * @Description
+ * 文件增删改查
+ *
+ * @author YangJJ
+ * @date 2019/9/20 11:20
  */
 @Service
-public class StorageFileInfo {
-
+public class FileInfoStorageService {
     @Autowired
     private FileInfoMapper fileInfoMapper;
 
     /**
-     * @Note 所有文件信息
+     * @implNote 所有文件信息
      */
-    private List<FileInfo> queryAllFileInfo() {
+    public List<FileInfo> queryAllFileInfo() {
         return fileInfoMapper.selectAll();
     }
 
     /**
-     * @Note 通过Id查找对应文件信息
+     * @implNote 通过Id查找对应文件信息
      */
-    private FileInfo queryFileInfoById(String id) {
+    public FileInfo queryFileInfoById(String id) {
         return fileInfoMapper.selectById(id);
     }
 
     /**
-     * @Note 通过md5值查找对应文件信息
+     * @implNote 通过md5值查找对应文件信息
      */
-    private FileInfo queryFileInfoByMd5(String md5) {
+    public FileInfo queryFileInfoByMd5(String md5) {
         return fileInfoMapper.selectByMd5(md5);
     }
 
     /**
-     * @Note 保存文件信息
+     * @implNote 保存文件信息
      */
-    private void saveFileInfo(FileInfo fileInfo) {
+    public void saveFileInfo(FileInfo fileInfo) {
         fileInfoMapper.save(fileInfo);
     }
 
     /**
-     * @Note 更新文件信息
+     * @implNote 更新文件信息
      */
-    private void updateFileInfo(FileInfo fileInfo) {
+    public void updateFileInfo(FileInfo fileInfo) {
         fileInfoMapper.update(fileInfo);
     }
 }

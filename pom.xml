@@ -36,9 +36,12 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.sucsoft.jt</groupId>
-			<artifactId>ac-jt-util</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -51,6 +54,55 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<artifactId>kotlin-maven-plugin</artifactId>
+				<groupId>org.jetbrains.kotlin</groupId>
+				<version>${kotlin.version}</version>
+				<configuration>
+					<compilerPlugins>
+						<plugin>all-open</plugin>
+						<plugin>no-arg</plugin>
+					</compilerPlugins>
+					<pluginOptions>
+						<option>all-open:annotation=com.sucsoft.kotlin.annotation.AllOpen</option>
+						<option>all-open:annotation=org.springframework.stereotype.Service</option>
+						<option>all-open:annotation=org.springframework.stereotype.Component</option>
+						<option>all-open:annotation=org.springframework.web.bind.annotation.Controller</option>
+						<option>all-open:annotation=org.springframework.web.bind.annotation.RestController</option>
+						<option>all-open:annotation=org.springframework.context.annotation.Configuration</option>
+						<option>no-arg:annotation=com.sucsoft.kotlin.annotation.NoArg</option>
+					</pluginOptions>
+					<jvmTarget>1.8</jvmTarget>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.jetbrains.kotlin</groupId>
+						<artifactId>kotlin-maven-allopen</artifactId>
+						<version>${kotlin.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.jetbrains.kotlin</groupId>
+						<artifactId>kotlin-maven-noarg</artifactId>
+						<version>${kotlin.version}</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>compile</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>test-compile</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>test-compile</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

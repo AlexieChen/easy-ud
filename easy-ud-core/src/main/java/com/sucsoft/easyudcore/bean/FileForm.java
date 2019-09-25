@@ -1,4 +1,4 @@
-package bean;
+package com.sucsoft.easyudcore.bean;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -7,7 +7,7 @@ import org.springframework.lang.Nullable;
 import java.util.Date;
 
 /**
- * @Auther: "Chenzx"
+ * @Author: "Chenzx"
  * @Date: 2019/9/18 13:23
  * @Description:
  */
@@ -26,10 +26,10 @@ public class FileForm {
     private Integer fileSize;
     @ApiModelProperty("总共的分块数目,文件总共分为多少份")
     private Integer chunkCount;
-    @ApiModelProperty("分片文件索引，从0开始")
-    private Integer chunkNo;
-    @ApiModelProperty("表单类型-check ,upload")
-    private String type;
+    @ApiModelProperty("分片文件索引，从1开始")
+    private Integer chunkIndex;
+    @ApiModelProperty("表单类型")
+    private Integer type;
 
     public String getMd5() {
         return md5;
@@ -80,19 +80,17 @@ public class FileForm {
         this.chunkCount = chunkCount;
     }
 
-    public Integer getChunkNo() {
-        return chunkNo;
+    public Integer getChunkIndex() {
+        return chunkIndex;
     }
 
-    public void setChunkNo(Integer chunkNo) {
-        this.chunkNo = chunkNo;
+    public void setChunkIndex(Integer chunkNo) {
+        this.chunkIndex = chunkNo;
     }
 
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+    public void setType(Integer type) { this.type = type; }
 }

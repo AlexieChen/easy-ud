@@ -7,9 +7,10 @@ import org.springframework.lang.Nullable;
 import java.util.Date;
 
 /**
- * @Author: "YangJJ"
- * @Date: 2019/9/18 13:23
- * @Description:
+ * 文件信息实体类
+ *
+ * @author "YangJJ"
+ * @date 2019/9/18 13:23
  */
 @ApiModel("文件上传表单")
 public class FileInfo {

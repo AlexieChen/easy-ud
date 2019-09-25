@@ -18,42 +18,43 @@ public class FileTypeLimitService {
     /**
      * 缓存文件头信息-文件头信息
      */
-    private static final HashMap<String, String> M_FILE_TYPES = new HashMap<>();
+    private static final HashMap<String, String> FILE_HEAD_TYPES = new HashMap<>();
     private static final Integer MAX_FILE_HEAD_SIZE = 28;
 
     static {
         // images
-        M_FILE_TYPES.put("FFD8FF", "jpg");
-        M_FILE_TYPES.put("89504E47", "png");
-        M_FILE_TYPES.put("47494638", "gif");
-        M_FILE_TYPES.put("49492A00", "tif");
-        M_FILE_TYPES.put("424D", "bmp");
+        FILE_HEAD_TYPES.put("FFD8FF", "jpg");
+        FILE_HEAD_TYPES.put("89504E47", "png");
+        FILE_HEAD_TYPES.put("47494638", "gif");
+        FILE_HEAD_TYPES.put("49492A00", "tif");
+        //24位位图格式的bmp文件除外
+        FILE_HEAD_TYPES.put("424D", "bmp");
         // CAD
-        M_FILE_TYPES.put("41433130", "dwg");
-        M_FILE_TYPES.put("38425053", "psd");
+        FILE_HEAD_TYPES.put("41433130", "dwg");
+        FILE_HEAD_TYPES.put("38425053", "psd");
         // 日记本
-        M_FILE_TYPES.put("7B5C727466", "rtf");
-        M_FILE_TYPES.put("3C3F786D6C", "xml");
-        M_FILE_TYPES.put("68746D6C3E", "html");
+        FILE_HEAD_TYPES.put("7B5C727466", "rtf");
+        FILE_HEAD_TYPES.put("3C3F786D6C", "xml");
+        FILE_HEAD_TYPES.put("68746D6C3E", "html");
         // 邮件
-        M_FILE_TYPES.put("44656C69766572792D646174653A", "eml");
-        M_FILE_TYPES.put("D0CF11E0", "doc");
-        M_FILE_TYPES.put("5374616E64617264204A", "mdb");
-        M_FILE_TYPES.put("252150532D41646F6265", "ps");
-        M_FILE_TYPES.put("255044462D312E", "pdf");
-        M_FILE_TYPES.put("504B0304", "zip");
-        M_FILE_TYPES.put("52617221", "rar");
-        M_FILE_TYPES.put("57415645", "wav");
-        M_FILE_TYPES.put("41564920", "avi");
-        M_FILE_TYPES.put("2E524D46", "rm");
-        M_FILE_TYPES.put("000001BA", "mpg");
-        M_FILE_TYPES.put("000001B3", "mpg");
-        M_FILE_TYPES.put("6D6F6F76", "mov");
-        M_FILE_TYPES.put("3026B2758E66CF11", "asf");
-        M_FILE_TYPES.put("4D546864", "mid");
-        M_FILE_TYPES.put("1F8B08", "gz");
-        M_FILE_TYPES.put("4D5A9000", "exe/dll");
-        M_FILE_TYPES.put("75736167", "txt");
+        FILE_HEAD_TYPES.put("44656C69766572792D646174653A", "eml");
+        FILE_HEAD_TYPES.put("D0CF11E0", "doc");
+        FILE_HEAD_TYPES.put("5374616E64617264204A", "mdb");
+        FILE_HEAD_TYPES.put("252150532D41646F6265", "ps");
+        FILE_HEAD_TYPES.put("255044462D312E", "pdf");
+        FILE_HEAD_TYPES.put("504B0304", "zip");
+        FILE_HEAD_TYPES.put("52617221", "rar");
+        FILE_HEAD_TYPES.put("57415645", "wav");
+        FILE_HEAD_TYPES.put("41564920", "avi");
+        FILE_HEAD_TYPES.put("2E524D46", "rm");
+        FILE_HEAD_TYPES.put("000001BA", "mpg");
+        FILE_HEAD_TYPES.put("000001B3", "mpg");
+        FILE_HEAD_TYPES.put("6D6F6F76", "mov");
+        FILE_HEAD_TYPES.put("3026B2758E66CF11", "asf");
+        FILE_HEAD_TYPES.put("4D546864", "mid");
+        FILE_HEAD_TYPES.put("1F8B08", "gz");
+        FILE_HEAD_TYPES.put("4D5A9000", "exe/dll");
+        FILE_HEAD_TYPES.put("75736167", "txt");
     }
 
     /**
@@ -64,14 +65,12 @@ public class FileTypeLimitService {
      */
     public Boolean fileAllowable(String filePath) {
         String fileHead = getFileHeader(filePath);
-        Set<String> fileTypes = M_FILE_TYPES.keySet();
+        Set<String> fileTypes = FILE_HEAD_TYPES.keySet();
         for (String type : fileTypes) {
             if (fileHead.startsWith(type)) {
-                System.out.println(type);
                 return true;
             }
         }
-        System.out.println(fileHead);
         return false;
     }
 
@@ -81,7 +80,7 @@ public class FileTypeLimitService {
      * @param filePath 文件路径
      * @return 文件头信息
      */
-    public String getFileHeader(String filePath) {
+    private String getFileHeader(String filePath) {
         FileInputStream is = null;
         String value = null;
         try {
@@ -112,7 +111,7 @@ public class FileTypeLimitService {
      * @param src 要读取文件头信息的文件的byte数组
      * @return 文件头信息
      */
-    public String bytesToHexString(byte[] src) {
+    private String bytesToHexString(byte[] src) {
         StringBuilder builder = new StringBuilder();
         if (src == null || src.length <= 0) {
             return null;

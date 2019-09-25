@@ -16,10 +16,13 @@ import java.util.Set;
 @Service
 public class FileTypeLimitService {
     /**
+     * 最大文件头字节数
+     */
+    private static final Integer MAX_FILE_HEAD_SIZE = 28;
+    /**
      * 缓存文件头信息-文件头信息
      */
     private static final HashMap<String, String> FILE_HEAD_TYPES = new HashMap<>();
-    private static final Integer MAX_FILE_HEAD_SIZE = 28;
 
     static {
         // images

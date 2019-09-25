@@ -1,4 +1,4 @@
-package exception;
+package com.sucsoft.easyudcore.exception;
 
 /**
  * @Auther: "Chenzx"

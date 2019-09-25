@@ -26,7 +26,7 @@ public class FileInfoMapperTest {
         fileInfo.setFileName("YangJJTest");
         fileInfo.setFilePath("/usr/nbjy");
         fileInfo.setFileSize(20);
-        fileInfo.setFileStatus("suc");
+        fileInfo.setFileStatus(1);
         fileInfo.setMd5("666");
         fileInfo.setId("777");
         fileInfoMapper.save(fileInfo);

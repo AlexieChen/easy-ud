@@ -24,8 +24,9 @@ public class FileInfo {
     private Integer fileSize;
     @ApiModelProperty("文件存放路径")
     private String filePath;
+
     @ApiModelProperty("文件状态，0未完成，1已完成")
-    private String fileStatus;
+    private Integer fileStatus;
     @ApiModelProperty("id")
     private String id;
 
@@ -50,20 +51,20 @@ public class FileInfo {
         this.id = id;
     }
 
+    public Integer getFileStatus() {
+        return fileStatus;
+    }
+
+    public void setFileStatus(Integer fileStatus) {
+        this.fileStatus = fileStatus;
+    }
+
     public String getFilePath() {
         return filePath;
     }
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
-    }
-
-    public String getFileStatus() {
-        return fileStatus;
-    }
-
-    public void setFileStatus(String fileStatus) {
-        this.fileStatus = fileStatus;
     }
 
     public String getMd5() {

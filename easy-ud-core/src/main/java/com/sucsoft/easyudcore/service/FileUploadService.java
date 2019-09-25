@@ -1,10 +1,10 @@
-package service;
+package com.sucsoft.easyudcore.service;
 
-import bean.*;
+import com.sucsoft.easyudcore.bean.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import util.FileUtil;
+import com.sucsoft.easyudcore.util.FileUtil;
 
 
 import java.io.IOException;

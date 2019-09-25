@@ -1,13 +1,13 @@
-package service;
+package com.sucsoft.easyudcore.service;
 
-import bean.FileResponse;
-import bean.FileUploadStatus;
-import exception.FileUploadException;
+import com.sucsoft.easyudcore.bean.FileResponse;
+import com.sucsoft.easyudcore.bean.FileUploadStatus;
+import com.sucsoft.easyudcore.exception.FileUploadException;
 import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import util.FileUtil;
+import com.sucsoft.easyudcore.util.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class FileBasicUploadService {
      * @description: 存储上传的文件信息，key为文件的md5值，value为文件信息FileResponse
      * @date: 2019/9/20 11:34
      */
-    public Map<String, FileResponse> fileInfoMap;
+    public Map<String, FileResponse> fileInfoMap = new HashMap<String, FileResponse>();
 
     /**
      * @return:
@@ -46,9 +46,11 @@ public class FileBasicUploadService {
         //文件由随机生成的id做服务器端文件名，防止重名文件出现
         String id = UUID.randomUUID().toString();
         try {
-            String[] pathList = new String[]{uploadDir, id, suffix};
+            //TODO 字符串拼接效率
+            //String[] pathList = new String[]{filePath,uploadDir, id, suffix};
             //文件路径拼接
-            String path = StringUtils.join(pathList);
+            //String path = StringUtils.join(pathList);
+            String path = filePath+uploadDir+File.separator+id+suffix;
             fileResponse = realUpload(path,fileName,file);
             //保存成功上传的文件信息
             fileInfoMap.put(fileResponse.getMd5(), fileResponse);
@@ -72,6 +74,7 @@ public class FileBasicUploadService {
         //获得文件的md5值
         String md5 = FileUtil.getFileMD5(dest);
         FileResponse fileResponse = new FileResponse(fileName, filePath, md5, FileUploadStatus.FILE_UPLOAD_STATUS_SUC);
+        fileResponse.setId(UUID.randomUUID().toString());
         return fileResponse;
     }
     /**

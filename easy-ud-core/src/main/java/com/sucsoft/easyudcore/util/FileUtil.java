@@ -1,7 +1,7 @@
-package util;
+package com.sucsoft.easyudcore.util;
 
 
-import bean.FileChunkDO;
+import com.sucsoft.easyudcore.bean.FileChunkDO;
 
 import java.io.File;
 import java.io.FileInputStream;

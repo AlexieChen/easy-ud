@@ -1,4 +1,4 @@
-package bean;
+package com.sucsoft.easyudcore.bean;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

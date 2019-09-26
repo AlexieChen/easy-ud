@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sucsoft.easyudsql.repository.FileInfoMapper">
+    <delete id="deleteById">
+        delete
+        from fileInfo
+        where id = #{id}
+    </delete>
+
+    <select id="selectAll" resultType="com.sucsoft.easyudsql.bean.FileInfo">
+        select *
+        from fileInfo
+        where 1 = 1
+    </select>
+
+    <select id="selectById" resultType="com.sucsoft.easyudsql.bean.FileInfo">
+        select *
+        from fileInfo
+        where id = #{id}
+    </select>
+
+    <select id="selectByMd5" resultType="com.sucsoft.easyudsql.bean.FileInfo">
+        select *
+        from fileInfo
+        where md5 = #{md5}
+    </select>
+
+    <update id="update" parameterType="com.sucsoft.easyudsql.bean.FileInfo">
+        update fileInfo
+        <set>
+            <if test="fileName != null">
+                fileName = #{fileName},
+            </if>
+            <if test="filePath != null">
+                filePath = #{filePath},
+            </if>
+            <if test="fileStatus != null">
+                fileStatus = #{fileStatus},
+            </if>
+            <if test="fileSize != null">
+                fileSize = #{fileSize},
+            </if>
+            <if test="date != null">
+                date = #{date},
+            </if>
+            <if test="md5 != null">
+                md5 = #{md5},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <insert id="save" parameterType="com.sucsoft.easyudsql.bean.FileInfo">
+        insert into fileInfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="filePath != null">
+                filePath,
+            </if>
+            <if test="fileName != null">
+                fileName,
+            </if>
+            <if test="md5 != null">
+                md5,
+            </if>
+            <if test="fileSize != null">
+                fileSize,
+            </if>
+            <if test="date != null">
+                date,
+            </if>
+            <if test="fileStatus != null">
+                fileStatus,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="filePath != null">
+                #{filePath},
+            </if>
+            <if test="fileName != null">
+                #{fileName},
+            </if>
+            <if test="md5 != null">
+                #{md5},
+            </if>
+            <if test="fileSize != null">
+                #{fileSize},
+            </if>
+            <if test="date != null">
+                #{date},
+            </if>
+            <if test="fileStatus != null">
+                #{fileStatus},
+            </if>
+        </trim>
+    </insert>
+</mapper>

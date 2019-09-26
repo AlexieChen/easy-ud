@@ -3,10 +3,8 @@ package com.sucsoft.easyudcore.service;
 import com.sucsoft.easyudcore.bean.FileResponse;
 import com.sucsoft.easyudcore.bean.FileUploadStatus;
 import com.sucsoft.easyudcore.exception.FileUploadException;
-import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
 import com.sucsoft.easyudcore.util.FileUtil;
 
@@ -29,7 +27,7 @@ public class FileBasicUploadService {
      * @description: 存储上传的文件信息，key为文件的md5值，value为文件信息FileResponse
      * @date: 2019/9/20 11:34
      */
-    public Map<String, FileResponse> fileInfoMap = new HashMap<String, FileResponse>();
+    public Map<String, FileResponse> fileInfoMap = new HashMap<>();
 
     /**
      * @return:
@@ -39,6 +37,8 @@ public class FileBasicUploadService {
      */
     public FileResponse upload(MultipartFile file, String uploadDir) throws IOException {
         FileResponse fileResponse;
+        //TODO 文件没有后缀怎么处理，改后缀怎么办
+        //文件必须有以"."开头的后缀，否则抛空指针异常
         Integer lastIndexOfDot = file.getOriginalFilename().lastIndexOf(".");
         //文件后缀
         String suffix = file.getOriginalFilename().substring(lastIndexOfDot);
@@ -48,11 +48,11 @@ public class FileBasicUploadService {
         String id = UUID.randomUUID().toString();
         try {
             //TODO 字符串拼接效率
-            //String[] pathList = new String[]{filePath,uploadDir, id, suffix};
-            //文件路径拼接
-            //String path = StringUtils.join(pathList);
-            String path = filePath+uploadDir+File.separator+id+suffix;
-            fileResponse = realUpload(path,fileName,file);
+/*            String[] pathList = new String[]{filePath,uploadDir, id, suffix};
+            文件路径拼接
+            String path = StringUtils.join(pathList);*/
+            String path = filePath + uploadDir + File.separator + id + suffix;
+            fileResponse = realUpload(path, fileName, file);
             //保存成功上传的文件信息
             fileInfoMap.put(fileResponse.getMd5(), fileResponse);
         } catch (FileUploadException e) {
@@ -61,13 +61,14 @@ public class FileBasicUploadService {
         }
         return fileResponse;
     }
+
     /**
      * @return:
      * @author: ChenZx
      * @description:
      * @date: 2019/9/24 15:33
      */
-    public FileResponse realUpload(String path,String fileName,MultipartFile file) throws IOException{
+    public FileResponse realUpload(String path, String fileName, MultipartFile file) throws IOException {
         File dest = new File(path);
         // 检测父目录是否存在，不存在则创建父目录
         checkParentDir(dest);
@@ -78,6 +79,7 @@ public class FileBasicUploadService {
         fileResponse.setId(UUID.randomUUID().toString());
         return fileResponse;
     }
+
     /**
      * @return:
      * @author: ChenZx
@@ -86,10 +88,6 @@ public class FileBasicUploadService {
      */
     public List<FileResponse> uploadFiles(List<MultipartFile> files, String uploadDir) throws IOException {
         ArrayList<FileResponse> fileResponses = new ArrayList<>();
-        if (files.size()==0){
-            fileResponses.add(new FileResponse("wd","nm","d",1));
-            return fileResponses;
-        }
         for (MultipartFile file : files) {
             fileResponses.add(upload(file, uploadDir));
         }

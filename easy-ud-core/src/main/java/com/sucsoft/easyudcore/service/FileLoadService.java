@@ -4,35 +4,37 @@ import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.net.URLEncoder;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * @Author: "Chenzx"
- * @Date: 2019/9/25 09:57
+ * @Date: 2019/9/26 10:53
  * @Description:
  */
 @Service
-public class FIleBasicDownloadService {
+public class FileLoadService {
     /**
      * @return:
      * @author: ChenZx
-     * @description: 基础下载功能
-     * @date: 2019/9/25 19:23
+     * @description: 文件读取
+     * @date: 2019/9/26 11:15
      */
-    public void basicDownload(String fileUri, HttpServletResponse response) throws IOException {
+    public void loadFile(String fileUri, HttpServletResponse response) throws IOException {
+        //前端预览文件
         File file = new File(fileUri);
         if (!file.exists()) {
-            throw new IOException("在服务器找不到相应文件");
+            throw new IOException("在服务器找不到对应文件");
         }
         FileInputStream inputStream = new FileInputStream(file);
         OutputStream outputStream = response.getOutputStream();
         try {
-            //文件名
-            String fileName = fileUri.substring(fileUri.lastIndexOf(File.separator) + 1);
             response.reset();
-            response.setContentType("application/x-download");
-            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "utf-8"));
+            //contentType目前用二进制流，前端自行转换
+            //TODO 有些文件类型，浏览器无法预览（限制）
+            response.setContentType("application/octet-stream");
             IOUtils.copy(inputStream, outputStream);
             response.flushBuffer();
         } catch (IOException e) {

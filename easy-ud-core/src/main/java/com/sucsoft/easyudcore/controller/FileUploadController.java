@@ -16,22 +16,22 @@ import java.util.List;
  * @Date: 2019/9/24 15:54
  * @Description:
  */
-@Api(value = "API-basic_upload", tags = "文件上传基础模块")
+@Api(value = "API-文件上传", tags = "文件上传基础模块")
 @RestController
-@RequestMapping("/rest/basic")
+@RequestMapping("/rest/basic/upload")
 public class FileUploadController {
 
     @Autowired
     private FileBasicUploadService fileBasicUploadService;
 
-    @RequestMapping(value = "/upload", consumes = "multipart/*", headers = "content-type=multipart/form-data", method = RequestMethod.POST)
-    @ApiOperation(value = "API-basic_upload-1.1-文件上传", notes = "文件上传")
+    @RequestMapping(value = "/file", consumes = "multipart/*", headers = "content-type=multipart/form-data", method = RequestMethod.POST)
+    @ApiOperation(value = "API-基础文件上传功能-1.1-单个文件上传", notes = "单个文件上传，uploadDir-上传目录")
     public FileResponse upload(@RequestParam MultipartFile file, @RequestParam String uploadDir) throws IOException {
         return fileBasicUploadService.upload(file, uploadDir);
     }
 
-    @PostMapping(value = "/upload/files", consumes = "multipart/*", headers = "content-type=multipart/form-data")
-    @ApiOperation(value = "API-basic_upload-文档", notes = "新增文档,请参考上传管理-资源上传接口")
+    @PostMapping(value = "/files", consumes = "multipart/*", headers = "content-type=multipart/form-data")
+    @ApiOperation(value = "API-基础文件上传功能-1.2-多个文件上传", notes = "多个文件上传，uploadDir-上传目录")
     public List<FileResponse> uploadFile(@RequestPart List<MultipartFile> files, @RequestParam String uploadDir) throws IOException {
         return fileBasicUploadService.uploadFiles(files, uploadDir);
     }

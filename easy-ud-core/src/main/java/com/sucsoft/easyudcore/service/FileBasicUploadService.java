@@ -41,6 +41,7 @@ public class FileBasicUploadService {
         FileResponse fileResponse;
         Integer lastIndexOfDot = file.getOriginalFilename().lastIndexOf(".");
         //文件后缀
+        //TODO 文件没有后缀怎么处理，改后缀怎么办
         String suffix = file.getOriginalFilename().substring(lastIndexOfDot);
         //文件名除去后缀
         String fileName = file.getOriginalFilename().substring(0, lastIndexOfDot);

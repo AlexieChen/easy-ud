@@ -1,19 +1,20 @@
 package com.sucsoft.easyudcore.service;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URLEncoder;
 
 /**
  * @Author: "Chenzx"
  * @Date: 2019/9/26 10:53
  * @Description:
  */
+@Service
 public class FileLoadService {
     /**
      * @return:
@@ -22,6 +23,7 @@ public class FileLoadService {
      * @date: 2019/9/26 11:15
      */
     public void loadFile(String fileUri, HttpServletResponse response) throws IOException {
+        //前端预览文件
         File file = new File(fileUri);
         if (!file.exists()) {
             throw new IOException("在服务器找不到对应文件");
@@ -31,7 +33,7 @@ public class FileLoadService {
         try {
             response.reset();
             //contentType目前用二进制流，前端自行转换
-            //有些文件类型，前端无法预览
+            //TODO 有些文件类型，浏览器无法预览（限制）
             response.setContentType("application/octet-stream");
             IOUtils.copy(inputStream, outputStream);
             response.flushBuffer();

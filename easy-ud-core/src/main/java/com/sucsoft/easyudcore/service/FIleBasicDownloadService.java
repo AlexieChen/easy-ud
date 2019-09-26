@@ -1,6 +1,5 @@
 package com.sucsoft.easyudcore.service;
 
-
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +29,7 @@ public class FIleBasicDownloadService {
         OutputStream outputStream = response.getOutputStream();
         try {
             //文件名
-            String fileName = fileUri.substring(fileUri.lastIndexOf("/") + 1);
+            String fileName = fileUri.substring(fileUri.lastIndexOf(File.separator) + 1);
             response.reset();
             response.setContentType("application/x-download");
             response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "utf-8"));
@@ -39,8 +38,8 @@ public class FIleBasicDownloadService {
         } catch (IOException e) {
             response.sendError(404, "在服务器找不到相应文件");
         } finally {
-                outputStream.flush();
-                outputStream.close();
+            outputStream.flush();
+            outputStream.close();
         }
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
  * @Date: 2019/9/24 15:54
  * @Description:
  */
-@Api(value = "API-basic_upload", tags = "文件上传基础模块")
+@Api(value = "API-文件上传", tags = "文件上传基础模块")
 @RestController
 @RequestMapping("/rest/basic/upload")
 public class FileUploadController {

@@ -59,7 +59,40 @@ public class FileTypeLimitService {
         FILE_HEAD_TYPES.put("4D5A9000", "exe/dll");
         FILE_HEAD_TYPES.put("75736167", "txt");
     }
+    /**
+     * 文件头信息-HTTP Content-type信息
+     */
+    private static final HashMap<String, String> FILE_CONTENT_TYPE = new HashMap<>();
 
+    static {
+        FILE_CONTENT_TYPE.put("FFD8FF", "image/jpeg");
+        FILE_CONTENT_TYPE.put("89504E47", "image/png");
+        FILE_CONTENT_TYPE.put("47494638", "image/gif");
+        FILE_CONTENT_TYPE.put("49492A00", "image/tiff");
+        //24位位图格式的bmp文件除外
+        FILE_CONTENT_TYPE.put("424D", "application/x-bmp");
+        // CAD
+        FILE_CONTENT_TYPE.put("41433130", "application/x-dwg");
+        // 日记本
+        FILE_CONTENT_TYPE.put("7B5C727466", "application/x-rtf");
+        FILE_CONTENT_TYPE.put("3C3F786D6C", "text/xml");
+        FILE_CONTENT_TYPE.put("68746D6C3E", "text/xml");
+        // 邮件
+        FILE_CONTENT_TYPE.put("44656C69766572792D646174653A", "message/rfc822");
+        FILE_CONTENT_TYPE.put("D0CF11E0", "application/msword");
+        FILE_CONTENT_TYPE.put("5374616E64617264204A", "application/x-mdb");
+        FILE_CONTENT_TYPE.put("252150532D41646F6265", "application/x-ps");
+        FILE_CONTENT_TYPE.put("255044462D312E", "application/pdf");
+        FILE_CONTENT_TYPE.put("57415645", "audio/wav");
+        FILE_CONTENT_TYPE.put("41564920", "video/avi");
+        FILE_CONTENT_TYPE.put("2E524D46", "application/vnd.rn-realmedia");
+        FILE_CONTENT_TYPE.put("000001BA", "video/mpg");
+        FILE_CONTENT_TYPE.put("000001B3", "video/mpg");
+        FILE_CONTENT_TYPE.put("6D6F6F76", "video/x-sgi-movie");
+        FILE_CONTENT_TYPE.put("3026B2758E66CF11", "video/x-ms-asf");
+        FILE_CONTENT_TYPE.put("4D546864", "audio/mid");
+        FILE_CONTENT_TYPE.put("4D5A9000", "application/x-msdownload");
+    }
     /**
      * 根据文件路径获取文件头信息
      *

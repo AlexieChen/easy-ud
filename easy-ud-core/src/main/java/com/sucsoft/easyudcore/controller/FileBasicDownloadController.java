@@ -24,7 +24,7 @@ public class FileBasicDownloadController {
     private FIleBasicDownloadService fileBasicDownloadService;
 
     @GetMapping("/file")
-    @ApiOperation(value = "API-文件基础下载-1.1-单个文件下载", notes = "单个文件上传，uploadDir-上传目录")
+    @ApiOperation(value = "API-文件基础下载-1.1-单个文件下载", notes = "单个文件下载，uploadDir-上传目录")
     public void basicDownload(String fileUri, HttpServletResponse response) throws IOException {
         fileBasicDownloadService.basicDownload(fileUri, response);
     }

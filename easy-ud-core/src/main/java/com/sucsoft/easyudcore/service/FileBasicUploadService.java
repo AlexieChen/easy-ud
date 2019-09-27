@@ -54,7 +54,7 @@ public class FileBasicUploadService {
             String path = filePath + uploadDir + File.separator + id + suffix;
             fileResponse = realUpload(path, fileName, file);
             //保存成功上传的文件信息
-            fileInfoMap.put(fileResponse.getMd5(), fileResponse);
+            fileInfoMap.put(fileResponse.getId(), fileResponse);
         } catch (FileUploadException e) {
             e.printStackTrace();
             fileResponse = new FileResponse(fileName, filePath, null, FileUploadStatus.FILE_UPLOAD_STATUS_FAIL);
@@ -75,7 +75,7 @@ public class FileBasicUploadService {
         file.transferTo(dest);
         //获得文件的md5值
         String md5 = FileUtil.getFileMD5(dest);
-        FileResponse fileResponse = new FileResponse(fileName, filePath, md5, FileUploadStatus.FILE_UPLOAD_STATUS_SUC);
+        FileResponse fileResponse = new FileResponse(fileName, path, md5, FileUploadStatus.FILE_UPLOAD_STATUS_SUC);
         fileResponse.setId(UUID.randomUUID().toString());
         return fileResponse;
     }

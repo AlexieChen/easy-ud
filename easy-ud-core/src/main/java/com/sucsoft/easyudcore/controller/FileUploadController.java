@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Api(value = "API-文件上传", tags = "文件上传基础模块")
 @RestController
-@RequestMapping("/rest/basic/upload")
+@RequestMapping("/easyud/basic/upload")
 public class FileUploadController {
 
     @Autowired
@@ -26,7 +26,7 @@ public class FileUploadController {
 
     @RequestMapping(value = "/file", consumes = "multipart/*", headers = "content-type=multipart/form-data", method = RequestMethod.POST)
     @ApiOperation(value = "API-基础文件上传功能-1.1-单个文件上传", notes = "单个文件上传，uploadDir-上传目录")
-    public FileResponse upload(@RequestParam MultipartFile file, @RequestParam String uploadDir) throws IOException {
+    public FileResponse upload(@RequestParam MultipartFile file, @RequestParam(required = false) String uploadDir) throws IOException {
         return fileBasicUploadService.upload(file, uploadDir);
     }
 

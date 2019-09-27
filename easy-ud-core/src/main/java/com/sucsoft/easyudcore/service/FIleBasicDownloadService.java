@@ -1,6 +1,8 @@
 package com.sucsoft.easyudcore.service;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -14,13 +16,18 @@ import java.net.URLEncoder;
  */
 @Service
 public class FIleBasicDownloadService {
+    @Value("${fileUploadFolder}")
+    private String filePath;
+    @Autowired
+    private FileBasicUploadService fileBasicUploadService;
+
     /**
      * @return:
      * @author: ChenZx
      * @description: 基础下载功能
      * @date: 2019/9/25 19:23
      */
-    public void basicDownload(String fileUri, HttpServletResponse response) throws IOException {
+    public void realDownload(String fileUri, HttpServletResponse response) throws IOException {
         File file = new File(fileUri);
         if (!file.exists()) {
             throw new IOException("在服务器找不到相应文件");
@@ -41,5 +48,10 @@ public class FIleBasicDownloadService {
             outputStream.flush();
             outputStream.close();
         }
+    }
+
+    public void downloadFile(String id, HttpServletResponse response) throws IOException {
+        String fileUri = fileBasicUploadService.fileInfoMap.get(id).getUploadPath();
+        realDownload(fileUri, response);
     }
 }

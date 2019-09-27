@@ -18,14 +18,14 @@ import java.io.IOException;
  */
 @Api(value = "API-文件基础下载", tags = "文件下载基础模块")
 @RestController
-@RequestMapping("/rest/basic/download")
+@RequestMapping("esayud/basic/download")
 public class FileBasicDownloadController {
     @Autowired
     private FIleBasicDownloadService fileBasicDownloadService;
 
     @GetMapping("/file")
-    @ApiOperation(value = "API-文件基础下载-1.1-单个文件下载", notes = "单个文件下载，uploadDir-上传目录")
-    public void basicDownload(String fileUri, HttpServletResponse response) throws IOException {
-        fileBasicDownloadService.basicDownload(fileUri, response);
+    @ApiOperation(value = "API-文件基础下载-1.1-单个文件下载", notes = "单个文件下载，id-上传文件id")
+    public void basicDownload(String id, HttpServletResponse response) throws IOException {
+        fileBasicDownloadService.downloadFile(id, response);
     }
 }

@@ -18,15 +18,15 @@ import java.io.IOException;
  */
 @Api(value = "API-文件预览", tags = "前端预览文件基础模块")
 @RestController
-@RequestMapping("/rest/load")
+@RequestMapping("/easyud/load")
 public class FileLoadController {
     @Autowired
     private FileLoadService fileLoadService;
 
     @GetMapping("/file")
-    @ApiOperation(value = "API-文件预览-1.1-单个文件预览", notes = "文件预览，fileUri-文件的uri")
-    public void loadFile(String fileUri, HttpServletResponse response) throws IOException {
-        fileLoadService.loadFile(fileUri, response);
+    @ApiOperation(value = "API-文件预览-1.1-单个文件预览", notes = "文件预览，id-上传文件的id")
+    public void loadFile(String id, HttpServletResponse response) throws IOException {
+        fileLoadService.loadFile(id, response);
     }
 
 }

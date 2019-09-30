@@ -1,6 +1,8 @@
 package com.sucsoft.easyudcore.service;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -16,13 +18,18 @@ import java.io.OutputStream;
  */
 @Service
 public class FileLoadService {
+    @Value("${ezUd.fileUpload.folder}")
+    private String filePath;
+    @Autowired
+    private FileBasicUploadService fileBasicUploadService;
+
     /**
      * @return:
      * @author: ChenZx
      * @description: 文件读取
      * @date: 2019/9/26 11:15
      */
-    public void loadFile(String fileUri, HttpServletResponse response) throws IOException {
+    public void realLoadFile(String fileUri, HttpServletResponse response) throws IOException {
         //前端预览文件
         File file = new File(fileUri);
         if (!file.exists()) {
@@ -43,5 +50,10 @@ public class FileLoadService {
             outputStream.flush();
             outputStream.close();
         }
+    }
+
+    public void loadFile(String id, HttpServletResponse response) throws IOException {
+        String fileUri = fileBasicUploadService.fileInfoMap.get(id).getUploadPath();
+        realLoadFile(fileUri, response);
     }
 }

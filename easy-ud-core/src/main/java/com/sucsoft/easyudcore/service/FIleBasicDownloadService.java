@@ -16,13 +16,14 @@ import java.net.URLEncoder;
  */
 @Service
 public class FIleBasicDownloadService {
-    @Value("${fileUploadFolder}")
+    @Value("${ezUd.fileUpload.folder}")
     private String filePath;
     @Autowired
     private FileBasicUploadService fileBasicUploadService;
 
     /**
      * @return:
+     *
      * @author: ChenZx
      * @description: 基础下载功能
      * @date: 2019/9/25 19:23

@@ -107,7 +107,7 @@ public class FileUploadService {
     public FileUploadReponse uploadChunkFIle(MultipartFile chunk, FileForm fileForm, String uploadDir) throws IOException {
         FileUploadReponse responseVo;
         try {
-            //TODO 上传路径怎么制定
+            //TODO 上传路径怎么制定，上传到web inf目录下，阻止客户端的访问，需要重定向
             //String chunkUploadDir =
             fileBasicUploadService.realUpload(uploadDir, fileForm.getFileName(), chunk);
             responseVo = new FileUploadReponse(FileUploadStatus.FILE_UPLOAD_STATUS_SUC, fileForm.getChunkIndex() + 1);

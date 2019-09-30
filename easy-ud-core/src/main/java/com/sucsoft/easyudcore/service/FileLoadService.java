@@ -18,7 +18,7 @@ import java.io.OutputStream;
  */
 @Service
 public class FileLoadService {
-    @Value("${fileUploadFolder}")
+    @Value("${ezUd.fileUpload.folder}")
     private String filePath;
     @Autowired
     private FileBasicUploadService fileBasicUploadService;

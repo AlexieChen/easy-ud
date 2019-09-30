@@ -19,7 +19,7 @@ import java.util.*;
  */
 @Service
 public class FileBasicUploadService {
-    @Value("${fileUploadFolder}")
+    @Value("${ezUd.fileUpload.folder}")
     private String filePath;
     /**
      * @return:

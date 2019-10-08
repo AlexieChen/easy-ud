@@ -3,6 +3,7 @@ package com.sucsoft.easyudcore.service;
 import com.sucsoft.easyudcore.bean.FileResponse;
 import com.sucsoft.easyudcore.bean.FileUploadStatus;
 import com.sucsoft.easyudcore.exception.FileUploadException;
+import com.sucsoft.easyudsql.service.FileTypeLimitService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +20,8 @@ import java.util.*;
  */
 @Service
 public class FileBasicUploadService {
+
+    private FileTypeLimitService fileTypeLimitService;
     @Value("${ezUd.fileUpload.folder}")
     private String filePath;
     /**
@@ -35,11 +38,14 @@ public class FileBasicUploadService {
      * @description: 基本文件上传
      * @date: 2019/9/20 13:08
      */
-    public FileResponse upload(MultipartFile file, String uploadDir) throws IOException {
+    public FileResponse upload(MultipartFile file, String uploadDir) throws FileUploadException{
         FileResponse fileResponse;
-        //TODO 文件没有后缀怎么处理，改后缀怎么办
-        //文件必须有以"."开头的后缀，否则抛空指针异常
-        Integer lastIndexOfDot = file.getOriginalFilename().lastIndexOf(".");
+        String originalFileName = file.getOriginalFilename();
+
+        Integer lastIndexOfDot = originalFileName.lastIndexOf(".");
+        if (!fileTypeLimitService.fileAllowable(originalFileName) && lastIndexOfDot!=-1) {
+            throw new FileUploadException("上传错误：文件类型不正确/文件没有后缀名");
+        }
         //文件后缀
         String suffix = file.getOriginalFilename().substring(lastIndexOfDot);
         //文件名除去后缀
@@ -48,14 +54,13 @@ public class FileBasicUploadService {
         String id = UUID.randomUUID().toString();
         try {
             //TODO 字符串拼接效率
-/*            String[] pathList = new String[]{filePath,uploadDir, id, suffix};
-            文件路径拼接
-            String path = StringUtils.join(pathList);*/
             String path = filePath + uploadDir + File.separator + id + suffix;
             fileResponse = realUpload(path, fileName, file);
             //保存成功上传的文件信息
             fileInfoMap.put(fileResponse.getId(), fileResponse);
-        } catch (FileUploadException e) {
+        }
+        //异常处理
+        catch (IOException e) {
             e.printStackTrace();
             fileResponse = new FileResponse(fileName, filePath, null, FileUploadStatus.FILE_UPLOAD_STATUS_FAIL);
         }
@@ -86,7 +91,7 @@ public class FileBasicUploadService {
      * @description: 上传多个文件
      * @date: 2019/9/20 13:09
      */
-    public List<FileResponse> uploadFiles(List<MultipartFile> files, String uploadDir) throws IOException {
+    public List<FileResponse> uploadFiles(List<MultipartFile> files, String uploadDir) throws FileUploadException {
         ArrayList<FileResponse> fileResponses = new ArrayList<>();
         for (MultipartFile file : files) {
             fileResponses.add(upload(file, uploadDir));
@@ -109,5 +114,4 @@ public class FileBasicUploadService {
             return true;
         }
     }
-
 }

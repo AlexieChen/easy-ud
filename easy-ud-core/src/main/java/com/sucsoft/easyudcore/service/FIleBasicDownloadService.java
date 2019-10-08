@@ -1,5 +1,6 @@
 package com.sucsoft.easyudcore.service;
 
+import com.sucsoft.easyudcore.exception.MyFileNotFoundException;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,10 +29,10 @@ public class FIleBasicDownloadService {
      * @description: 基础下载功能
      * @date: 2019/9/25 19:23
      */
-    public void realDownload(String fileUri, HttpServletResponse response) throws IOException {
+    public void realDownload(String fileUri, HttpServletResponse response) throws IOException,MyFileNotFoundException {
         File file = new File(fileUri);
         if (!file.exists()) {
-            throw new IOException("在服务器找不到相应文件");
+            throw new MyFileNotFoundException("找不到对应文件");
         }
         FileInputStream inputStream = new FileInputStream(file);
         OutputStream outputStream = response.getOutputStream();
@@ -44,14 +45,15 @@ public class FIleBasicDownloadService {
             IOUtils.copy(inputStream, outputStream);
             response.flushBuffer();
         } catch (IOException e) {
-            response.sendError(404, "在服务器找不到相应文件");
+            //状态码408：请求超时
+            response.sendError(HttpServletResponse.SC_REQUEST_TIMEOUT, "发生 I/O 错误：磁盘损坏/资源不可用/资源被占用导致请求超时");
         } finally {
             outputStream.flush();
             outputStream.close();
         }
     }
 
-    public void downloadFile(String id, HttpServletResponse response) throws IOException {
+    public void downloadFile(String id, HttpServletResponse response) throws IOException,MyFileNotFoundException {
         String fileUri = fileBasicUploadService.fileInfoMap.get(id).getUploadPath();
         realDownload(fileUri, response);
     }

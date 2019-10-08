@@ -1,11 +1,11 @@
 package com.sucsoft.easyudcore.service;
 
 import com.sucsoft.easyudcore.bean.*;
+import com.sucsoft.easyudcore.exception.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.sucsoft.easyudcore.util.FileUtil;
-
 
 import java.io.IOException;
 import java.util.*;
@@ -28,7 +28,7 @@ public class FileUploadService {
      * @description: 文件上传，若已经上传过，直接返回文件信息
      * @date: 2019/9/20 13:10
      */
-    public FileResponse upload(String md5, String uplaodDir, MultipartFile file) throws IOException {
+    public FileResponse upload(String md5, String uplaodDir, MultipartFile file) throws FileUploadException {
         if (uploadedBefore(md5)) {
             return fileBasicUploadService.fileInfoMap.get(md5);
         } else {
@@ -58,7 +58,7 @@ public class FileUploadService {
             responseVo = checkFileStatus(fileForm);
         } else if (fileForm.getType().equals(FileFormType.UPLOAD_FILE_ONLY)) {
             responseVo = uploadChunkFIle(chunk, fileForm, uploadDir);
-        }else {
+        } else {
             //TODO 其他类型表单处理
             responseVo = new FileUploadReponse();
         }

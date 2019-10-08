@@ -24,12 +24,11 @@ public class FIleBasicDownloadService {
 
     /**
      * @return:
-     *
      * @author: ChenZx
      * @description: 基础下载功能
      * @date: 2019/9/25 19:23
      */
-    public void realDownload(String fileUri, HttpServletResponse response) throws IOException,MyFileNotFoundException {
+    public void realDownload(String fileUri, HttpServletResponse response) throws IOException, MyFileNotFoundException {
         File file = new File(fileUri);
         if (!file.exists()) {
             throw new MyFileNotFoundException("找不到对应文件");
@@ -38,6 +37,7 @@ public class FIleBasicDownloadService {
         OutputStream outputStream = response.getOutputStream();
         try {
             //文件名
+            //TODO 用Resource框架写，需要整理一下
             String fileName = fileUri.substring(fileUri.lastIndexOf(File.separator) + 1);
             response.reset();
             response.setContentType("application/x-download");
@@ -53,7 +53,7 @@ public class FIleBasicDownloadService {
         }
     }
 
-    public void downloadFile(String id, HttpServletResponse response) throws IOException,MyFileNotFoundException {
+    public void downloadFile(String id, HttpServletResponse response) throws IOException, MyFileNotFoundException {
         String fileUri = fileBasicUploadService.fileInfoMap.get(id).getUploadPath();
         realDownload(fileUri, response);
     }

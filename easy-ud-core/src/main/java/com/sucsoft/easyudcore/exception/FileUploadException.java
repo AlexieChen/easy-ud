@@ -1,7 +1,7 @@
 package com.sucsoft.easyudcore.exception;
 
 /**
- * @Auther: "Chenzx"
+ * @Author: "Chenzx"
  * @Date: 2019/9/19 11:38
  * @Description:
  */

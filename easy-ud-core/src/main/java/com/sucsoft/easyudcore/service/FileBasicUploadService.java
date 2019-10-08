@@ -38,11 +38,11 @@ public class FileBasicUploadService {
      * @description: 基本文件上传
      * @date: 2019/9/20 13:08
      */
-    public FileResponse upload(MultipartFile file, String uploadDir) throws FileUploadException{
+    public FileResponse upload(MultipartFile file, String uploadDir) throws FileUploadException {
         FileResponse fileResponse;
         String originalFileName = file.getOriginalFilename();
         Integer lastIndexOfDot = originalFileName.lastIndexOf(".");
-        if (!fileTypeLimitService.fileAllowable(originalFileName) && lastIndexOfDot!=-1) {
+        if (!fileTypeLimitService.fileAllowable(originalFileName) && lastIndexOfDot != -1) {
             throw new FileUploadException("上传错误：文件类型和后缀名不匹配");
         }
         //文件后缀

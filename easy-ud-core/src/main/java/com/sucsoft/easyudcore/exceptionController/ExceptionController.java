@@ -38,7 +38,7 @@ public class ExceptionController {
      * @date: 2019/10/8 14:22
      */
     @ResponseBody
-    @ExceptionHandler({FileUploadException.class,FileStorageException.class})
+    @ExceptionHandler({FileUploadException.class, FileStorageException.class})
     public ResponseEntity errorHandler(FileUploadException ex) {
         return ResponseEntity.badRequest().body(ex);
     }

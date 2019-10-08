@@ -1,15 +1,18 @@
 package com.sucsoft.easyudcore.controller;
 
+import com.sucsoft.easyudcore.exception.MyFileNotFoundException;
 import com.sucsoft.easyudcore.service.FIleBasicDownloadService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * @Author: "Chenzx"
@@ -25,7 +28,7 @@ public class FileBasicDownloadController {
 
     @GetMapping("/file")
     @ApiOperation(value = "API-文件基础下载-1.1-单个文件下载", notes = "单个文件下载，id-上传文件id")
-    public void basicDownload(String id, HttpServletResponse response) throws IOException {
-        fileBasicDownloadService.downloadFile(id, response);
+    public ResponseEntity basicDownload(String id) throws MyFileNotFoundException , UnsupportedEncodingException {
+       return fileBasicDownloadService.downloadFile(id);
     }
 }

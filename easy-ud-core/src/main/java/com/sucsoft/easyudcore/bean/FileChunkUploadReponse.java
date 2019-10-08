@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @Description:
  */
 @ApiModel("上传文件后返给前端的对象")
-public class FileUploadReponse {
+public class FileChunkUploadReponse {
     @ApiModelProperty("上传状态")
     private int uploadStatus ;
     @ApiModelProperty("下一个分块的索引")
@@ -30,10 +30,10 @@ public class FileUploadReponse {
     public void setNextIndex(int nextIndex) {
         this.nextIndex = nextIndex;
     }
-    public  FileUploadReponse(){
+    public FileChunkUploadReponse(){
     }
 
-    public FileUploadReponse(int uploadStatus, int nextIndex) {
+    public FileChunkUploadReponse(int uploadStatus, int nextIndex) {
         this.uploadStatus = uploadStatus;
         this.nextIndex = nextIndex;
     }

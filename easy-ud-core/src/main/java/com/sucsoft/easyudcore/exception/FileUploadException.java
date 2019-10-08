@@ -5,7 +5,7 @@ package com.sucsoft.easyudcore.exception;
  * @Date: 2019/9/19 11:38
  * @Description:
  */
-public class FileUploadException extends Exception {
+public class FileUploadException extends RuntimeException {
 
     public FileUploadException(String message) {
         super(message);

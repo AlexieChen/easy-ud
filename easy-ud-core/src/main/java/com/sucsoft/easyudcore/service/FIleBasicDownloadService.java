@@ -4,11 +4,19 @@ import com.sucsoft.easyudcore.exception.MyFileNotFoundException;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 
 /**
  * @Author: "Chenzx"
@@ -28,33 +36,25 @@ public class FIleBasicDownloadService {
      * @description: 基础下载功能
      * @date: 2019/9/25 19:23
      */
-    public void realDownload(String fileUri, HttpServletResponse response) throws IOException, MyFileNotFoundException {
+    public ResponseEntity<Resource> realDownload(String fileUri, String fileName) throws MyFileNotFoundException,UnsupportedEncodingException {
         File file = new File(fileUri);
         if (!file.exists()) {
             throw new MyFileNotFoundException("找不到对应文件" + ":" + fileUri);
         }
-        FileInputStream inputStream = new FileInputStream(file);
-        OutputStream outputStream = response.getOutputStream();
-        try {
-            //文件名
-            //TODO 用Resource框架写，需要整理一下
-            String fileName = fileUri.substring(fileUri.lastIndexOf(File.separator) + 1);
-            response.reset();
-            response.setContentType("application/x-download");
-            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "utf-8"));
-            IOUtils.copy(inputStream, outputStream);
-            response.flushBuffer();
-        } catch (IOException e) {
-            //状态码408：请求超时
-            response.sendError(HttpServletResponse.SC_REQUEST_TIMEOUT, "发生 I/O 错误：磁盘损坏/资源不可用/资源被占用导致请求超时");
-        } finally {
-            outputStream.flush();
-            outputStream.close();
-        }
+        //文件名
+        //TODO 用Resource框架写，需要整理一下
+        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        Resource resource = resolver.getResource("file:"+fileUri);
+        MediaType mediaType = new MediaType( "application","x-download",Charset.forName("utf-8"));
+        return ResponseEntity.ok()
+                .contentType(mediaType)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +URLEncoder.encode(fileName, "utf-8")+ "\"")
+                .body(resource);
     }
 
-    public void downloadFile(String id, HttpServletResponse response) throws IOException, MyFileNotFoundException {
+    public ResponseEntity downloadFile(String id) throws MyFileNotFoundException ,UnsupportedEncodingException{
         String fileUri = fileBasicUploadService.fileInfoMap.get(id).getUploadPath();
-        realDownload(fileUri, response);
+        String fileName = fileBasicUploadService.fileInfoMap.get(id).getFileName();
+        return realDownload(fileUri, fileName);
     }
 }

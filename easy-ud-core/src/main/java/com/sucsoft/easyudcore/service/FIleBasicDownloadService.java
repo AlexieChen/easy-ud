@@ -31,7 +31,7 @@ public class FIleBasicDownloadService {
     public void realDownload(String fileUri, HttpServletResponse response) throws IOException, MyFileNotFoundException {
         File file = new File(fileUri);
         if (!file.exists()) {
-            throw new MyFileNotFoundException("找不到对应文件");
+            throw new MyFileNotFoundException("找不到对应文件"+":"+fileUri);
         }
         FileInputStream inputStream = new FileInputStream(file);
         OutputStream outputStream = response.getOutputStream();

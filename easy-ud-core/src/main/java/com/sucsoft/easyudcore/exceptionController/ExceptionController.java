@@ -3,12 +3,11 @@ package com.sucsoft.easyudcore.exceptionController;
 import com.sucsoft.easyudcore.exception.FileStorageException;
 import com.sucsoft.easyudcore.exception.FileUploadException;
 import com.sucsoft.easyudcore.exception.MyFileNotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,18 +21,14 @@ public class ExceptionController {
     /**
      * @return:
      * @author: ChenZx
-     * @description:   下载找不到文件时异常处理
+     * @description: 下载找不到文件时异常处理
      * @date: 2019/10/8 11:47
      */
     @ResponseBody
-    @ExceptionHandler(value= MyFileNotFoundException.class)
-    public Map errorHandler(MyFileNotFoundException ex) {
+    @ExceptionHandler(MyFileNotFoundException.class)
+    public ResponseEntity<MyFileNotFoundException> errorHandler(MyFileNotFoundException ex) {
         //TODO 日志记录
-        //initialCapacity = (需要存储的元素个数 / 负载因子(一般为0.75)) + 1
-        Map<String,Object> map = new HashMap<>(6);
-        map.put("msg",ex.getMessage());
-        map.put("cause",ex.getCause());
-        return map;
+        return ResponseEntity.badRequest().body(ex);
     }
 
     /**
@@ -43,12 +38,9 @@ public class ExceptionController {
      * @date: 2019/10/8 14:22
      */
     @ResponseBody
-    @ExceptionHandler(value = FileUploadException.class)
-    public Map errorHandler(FileUploadException ex){
-        Map<String,Object> map = new HashMap<>(6);
-        map.put("msg",ex.getMessage());
-        map.put("cause",ex.getCause());
-        return map;
+    @ExceptionHandler({FileUploadException.class,FileStorageException.class})
+    public ResponseEntity errorHandler(FileUploadException ex) {
+        return ResponseEntity.badRequest().body(ex);
     }
 
     /**
@@ -57,12 +49,9 @@ public class ExceptionController {
      * @description: 文件存储的异常处理，目前没用
      * @date: 2019/10/8 14:23
      */
-    @ResponseBody
+/*    @ResponseBody
     @ExceptionHandler(value = FileStorageException.class)
-    public Map errorHandler(FileStorageException ex){
-        Map<String,Object> map = new HashMap<>(6);
-        map.put("msg",ex.getMessage());
-        map.put("cause",ex.getCause());
-        return map;
-    }
+    public ResponseEntity errorHandler(FileStorageException ex) {
+        return ResponseEntity.badRequest().body(ex);
+    }*/
 }

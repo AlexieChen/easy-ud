@@ -41,10 +41,9 @@ public class FileBasicUploadService {
     public FileResponse upload(MultipartFile file, String uploadDir) throws FileUploadException{
         FileResponse fileResponse;
         String originalFileName = file.getOriginalFilename();
-
         Integer lastIndexOfDot = originalFileName.lastIndexOf(".");
         if (!fileTypeLimitService.fileAllowable(originalFileName) && lastIndexOfDot!=-1) {
-            throw new FileUploadException("上传错误：文件类型不正确/文件没有后缀名");
+            throw new FileUploadException("上传错误：文件类型和后缀名不匹配");
         }
         //文件后缀
         String suffix = file.getOriginalFilename().substring(lastIndexOfDot);

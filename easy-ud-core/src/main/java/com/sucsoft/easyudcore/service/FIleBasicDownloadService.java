@@ -1,13 +1,21 @@
 package com.sucsoft.easyudcore.service;
 
-import org.apache.tomcat.util.http.fileupload.IOUtils;
+import com.sucsoft.easyudcore.exception.MyFileNotFoundException;
+import com.sucsoft.easyudcore.util.MultiPartUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletResponse;
+
 import java.io.*;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 
 /**
  * @Author: "Chenzx"
@@ -23,36 +31,29 @@ public class FIleBasicDownloadService {
 
     /**
      * @return:
-     *
      * @author: ChenZx
      * @description: 基础下载功能
      * @date: 2019/9/25 19:23
      */
-    public void realDownload(String fileUri, HttpServletResponse response) throws IOException {
+    public ResponseEntity<Resource> realDownload(String fileUri, String fileName) throws MyFileNotFoundException,UnsupportedEncodingException {
         File file = new File(fileUri);
         if (!file.exists()) {
-            throw new IOException("在服务器找不到相应文件");
+            throw new MyFileNotFoundException("找不到对应文件" + ":" + fileUri);
         }
-        FileInputStream inputStream = new FileInputStream(file);
-        OutputStream outputStream = response.getOutputStream();
-        try {
-            //文件名
-            String fileName = fileUri.substring(fileUri.lastIndexOf(File.separator) + 1);
-            response.reset();
-            response.setContentType("application/x-download");
-            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "utf-8"));
-            IOUtils.copy(inputStream, outputStream);
-            response.flushBuffer();
-        } catch (IOException e) {
-            response.sendError(404, "在服务器找不到相应文件");
-        } finally {
-            outputStream.flush();
-            outputStream.close();
-        }
+        //文件名后缀
+        String fileSuffix = MultiPartUtil.fileSuffix(fileUri);
+        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        Resource resource = resolver.getResource("file:"+fileUri);
+        MediaType mediaType = new MediaType( "application","x-download",Charset.forName("utf-8"));
+        return ResponseEntity.ok()
+                .contentType(mediaType)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +URLEncoder.encode(fileName+fileSuffix, "utf-8")+ "\"")
+                .body(resource);
     }
 
-    public void downloadFile(String id, HttpServletResponse response) throws IOException {
+    public ResponseEntity downloadFile(String id) throws MyFileNotFoundException ,UnsupportedEncodingException{
         String fileUri = fileBasicUploadService.fileInfoMap.get(id).getUploadPath();
-        realDownload(fileUri, response);
+        String fileName = fileBasicUploadService.fileInfoMap.get(id).getFileName();
+        return realDownload(fileUri, fileName);
     }
 }

@@ -1,6 +1,7 @@
 package com.sucsoft.easyudcore.controller;
 
 import com.sucsoft.easyudcore.bean.FileResponse;
+import com.sucsoft.easyudcore.exception.FileUploadException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +26,14 @@ public class FileUploadController {
     private FileBasicUploadService fileBasicUploadService;
 
     @RequestMapping(value = "/file", consumes = "multipart/*", headers = "content-type=multipart/form-data", method = RequestMethod.POST)
-    @ApiOperation(value = "API-基础文件上传功能-1.1-单个文件上传", notes = "单个文件上传，uploadDir-上传目录")
-    public FileResponse upload(@RequestParam MultipartFile file, @RequestParam(required = false) String uploadDir) throws IOException {
-        return fileBasicUploadService.upload(file, uploadDir);
+    @ApiOperation(value = "API-基础文件上传功能-1.1-单个文件上传", notes = "单个文件上传，relativePath-上传相对目录")
+    public FileResponse upload(@RequestParam MultipartFile file, @RequestParam(required = false) String relativePath) throws FileUploadException {
+        return fileBasicUploadService.upload(file, relativePath);
     }
 
     @PostMapping(value = "/files", consumes = "multipart/*", headers = "content-type=multipart/form-data")
-    @ApiOperation(value = "API-基础文件上传功能-1.2-多个文件上传", notes = "多个文件上传，uploadDir-上传目录")
-    public List<FileResponse> uploadFile(@RequestPart List<MultipartFile> files, @RequestParam String uploadDir) throws IOException {
-        return fileBasicUploadService.uploadFiles(files, uploadDir);
+    @ApiOperation(value = "API-基础文件上传功能-1.2-多个文件上传", notes = "多个文件上传，relativePath-上传相对目录")
+    public List<FileResponse> uploadFile(@RequestPart List<MultipartFile> files, @RequestParam String relativePath) throws FileUploadException {
+        return fileBasicUploadService.uploadFiles(files, relativePath);
     }
 }

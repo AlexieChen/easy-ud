@@ -12,6 +12,7 @@
 		<module>easy-ud-server</module>
 		<module>easy-ud-client</module>
 		<module>easy-ud-server-starter</module>
+		<module>easy-ud-exception</module>
 	</modules>
     <packaging>pom</packaging>
 

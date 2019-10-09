@@ -3,6 +3,9 @@ package com.sucsoft.easyudcore.service;
 import com.sucsoft.easyudcore.bean.FileResponse;
 import com.sucsoft.easyudcore.bean.FileUploadStatus;
 import com.sucsoft.easyudcore.exception.FileUploadException;
+import com.sucsoft.easyudcore.util.FilePathUtil;
+import com.sucsoft.easyudcore.util.MultiPartUtil;
+import com.sucsoft.easyudsql.service.FileTypeLimitService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,8 +22,10 @@ import java.util.*;
  */
 @Service
 public class FileBasicUploadService {
+
+    private FileTypeLimitService fileTypeLimitService;
     @Value("${ezUd.fileUpload.folder}")
-    private String filePath;
+    private String uploadPath;
     /**
      * @return:
      * @author: ChenZx
@@ -35,29 +40,24 @@ public class FileBasicUploadService {
      * @description: 基本文件上传
      * @date: 2019/9/20 13:08
      */
-    public FileResponse upload(MultipartFile file, String uploadDir) throws IOException {
+    public FileResponse upload(MultipartFile file, String relativePath) throws FileUploadException {
         FileResponse fileResponse;
-        //TODO 文件没有后缀怎么处理，改后缀怎么办
-        //文件必须有以"."开头的后缀，否则抛空指针异常
-        Integer lastIndexOfDot = file.getOriginalFilename().lastIndexOf(".");
-        //文件后缀
-        String suffix = file.getOriginalFilename().substring(lastIndexOfDot);
+    /*        if (!fileTypeLimitService.fileAllowable(file.getOriginalFilename()) && MultiPartUtil.lastIndexOfDot(file) != -1) {
+                throw new FileUploadException("上传错误：文件类型和后缀名不匹配");
+            }*/
         //文件名除去后缀
-        String fileName = file.getOriginalFilename().substring(0, lastIndexOfDot);
+        String fileName = MultiPartUtil.fileName(file);
         //文件由随机生成的id做服务器端文件名，防止重名文件出现
-        String id = UUID.randomUUID().toString();
+        String path = FilePathUtil.absolutePath(uploadPath, relativePath, file);
         try {
-            //TODO 字符串拼接效率
-/*            String[] pathList = new String[]{filePath,uploadDir, id, suffix};
-            文件路径拼接
-            String path = StringUtils.join(pathList);*/
-            String path = filePath + uploadDir + File.separator + id + suffix;
-            fileResponse = realUpload(path, fileName, file);
+            fileResponse = realUpload(path, file);
             //保存成功上传的文件信息
             fileInfoMap.put(fileResponse.getId(), fileResponse);
-        } catch (FileUploadException e) {
+        }
+        //异常处理
+        catch (IOException e) {
             e.printStackTrace();
-            fileResponse = new FileResponse(fileName, filePath, null, FileUploadStatus.FILE_UPLOAD_STATUS_FAIL);
+            fileResponse = new FileResponse(fileName, path, null, FileUploadStatus.FILE_UPLOAD_STATUS_FAIL);
         }
         return fileResponse;
     }
@@ -68,13 +68,14 @@ public class FileBasicUploadService {
      * @description:
      * @date: 2019/9/24 15:33
      */
-    public FileResponse realUpload(String path, String fileName, MultipartFile file) throws IOException {
+    public FileResponse realUpload(String path, MultipartFile file) throws IOException {
         File dest = new File(path);
         // 检测父目录是否存在，不存在则创建父目录
         checkParentDir(dest);
         file.transferTo(dest);
         //获得文件的md5值
         String md5 = FileUtil.getFileMD5(dest);
+        String fileName = MultiPartUtil.fileName(file);
         FileResponse fileResponse = new FileResponse(fileName, path, md5, FileUploadStatus.FILE_UPLOAD_STATUS_SUC);
         fileResponse.setId(UUID.randomUUID().toString());
         return fileResponse;
@@ -86,7 +87,7 @@ public class FileBasicUploadService {
      * @description: 上传多个文件
      * @date: 2019/9/20 13:09
      */
-    public List<FileResponse> uploadFiles(List<MultipartFile> files, String uploadDir) throws IOException {
+    public List<FileResponse> uploadFiles(List<MultipartFile> files, String uploadDir) throws FileUploadException {
         ArrayList<FileResponse> fileResponses = new ArrayList<>();
         for (MultipartFile file : files) {
             fileResponses.add(upload(file, uploadDir));
@@ -109,5 +110,4 @@ public class FileBasicUploadService {
             return true;
         }
     }
-
 }

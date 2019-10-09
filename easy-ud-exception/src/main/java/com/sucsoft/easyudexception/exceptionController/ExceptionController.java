@@ -32,7 +32,6 @@ public class ExceptionController {
     @ResponseBody
     @ExceptionHandler(MyFileNotFoundException.class)
     public ResponseEntity<MyFileNotFoundException> errorHandler(MyFileNotFoundException ex) {
-        //TODO 日志记录
         logger.debug(ex.getMessage());
         return ResponseEntity.badRequest().body(ex);
     }

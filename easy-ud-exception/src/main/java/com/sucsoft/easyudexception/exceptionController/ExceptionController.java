@@ -1,18 +1,17 @@
-package com.sucsoft.easyudcore.exceptionController;
+package com.sucsoft.easyudexception.exceptionController;
 
 import com.sucsoft.easyudcore.exception.FileStorageException;
 import com.sucsoft.easyudcore.exception.FileUploadException;
 import com.sucsoft.easyudcore.exception.MyFileNotFoundException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
+
 
 /**
  * @Author: "Chenzx"
@@ -22,7 +21,7 @@ import java.util.Map;
 @ControllerAdvice
 public class ExceptionController {
 
-    private static Logger logger = LogManager.getLogger(ExceptionController.class.getName());
+    private static Logger logger = LoggerFactory.getLogger(ExceptionController.class);
 
     /**
      * @return:

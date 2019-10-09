@@ -24,4 +24,13 @@ public class MultiPartUtil {
         return file.getOriginalFilename().substring(0, lastIndexOfDot);
     }
 
+    public static Integer lastIndexOfDot(String fileUri) {
+        return fileUri.lastIndexOf(".");
+    }
+
+    public static String fileSuffix(String fileUri) {
+        Integer lastIndexOfDot = lastIndexOfDot(fileUri);
+        //包含“."
+        return fileUri.substring(lastIndexOfDot);
+    }
 }

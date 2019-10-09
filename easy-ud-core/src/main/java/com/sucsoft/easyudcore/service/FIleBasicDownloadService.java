@@ -1,19 +1,18 @@
 package com.sucsoft.easyudcore.service;
 
 import com.sucsoft.easyudcore.exception.MyFileNotFoundException;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
+import com.sucsoft.easyudcore.util.MultiPartUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletResponse;
+
 import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
@@ -41,14 +40,14 @@ public class FIleBasicDownloadService {
         if (!file.exists()) {
             throw new MyFileNotFoundException("找不到对应文件" + ":" + fileUri);
         }
-        //文件名
-        //TODO 用Resource框架写，需要整理一下
+        //文件名后缀
+        String fileSuffix = MultiPartUtil.fileSuffix(fileUri);
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource resource = resolver.getResource("file:"+fileUri);
         MediaType mediaType = new MediaType( "application","x-download",Charset.forName("utf-8"));
         return ResponseEntity.ok()
                 .contentType(mediaType)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +URLEncoder.encode(fileName, "utf-8")+ "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +URLEncoder.encode(fileName+fileSuffix, "utf-8")+ "\"")
                 .body(resource);
     }
 

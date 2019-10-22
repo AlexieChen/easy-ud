@@ -7,11 +7,10 @@
         <groupId>com.sucsoft</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <groupId>com.sucsoft</groupId>
     <artifactId>easy-ud-exception</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>easy-ud-exception</name>
-    <description>Demo project for Spring Boot</description>
+    <description>异常处理模块</description>
 
     <properties>
         <java.version>1.8</java.version>

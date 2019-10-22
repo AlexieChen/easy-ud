@@ -1,9 +1,8 @@
 package com.sucsoft.easyudcore.bean;
 
 /**
- * @Auther: "Chenzx"
- * @Date: 2019/9/20 10:13
- * @Description:
+ * @author : Chenx
+ * @date : 2019/9/20 10:13
  */
 public class FileUploadStatus {
 

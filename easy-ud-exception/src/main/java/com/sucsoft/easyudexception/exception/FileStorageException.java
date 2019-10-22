@@ -1,4 +1,4 @@
-package com.sucsoft.easyudcore.exception;
+package com.sucsoft.easyudexception.exception;
 
 
 public class FileStorageException extends RuntimeException {

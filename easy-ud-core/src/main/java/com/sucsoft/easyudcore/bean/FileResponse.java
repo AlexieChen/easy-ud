@@ -4,9 +4,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * @Auther: "Chenzx"
- * @Date: 2019/9/19 13:39
- * @Description:
+ *  @author : "Chenzx"
+ *  @date : 2019/9/19 13:39
  */
 @ApiModel("文件上传返回信息")
 public class FileResponse {

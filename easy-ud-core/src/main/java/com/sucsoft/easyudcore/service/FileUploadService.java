@@ -1,7 +1,7 @@
 package com.sucsoft.easyudcore.service;
 
 import com.sucsoft.easyudcore.bean.*;
-import com.sucsoft.easyudcore.exception.FileUploadException;
+import com.sucsoft.easyudexception.exception.FileUploadException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -52,15 +52,15 @@ public class FileUploadService {
      * @description: 分片上传
      * @date: 2019/9/20 13:49
      */
-    public FileChunkUploadReponse uploadFileSlice(MultipartFile chunk, FileForm fileForm, String uploadDir) throws IOException {
-        FileChunkUploadReponse responseVo;
+    public FileChunkUploadResponse uploadFileSlice(MultipartFile chunk, FileForm fileForm, String uploadDir) throws IOException {
+        FileChunkUploadResponse responseVo;
         if (fileForm.getType().equals(FileFormType.CHECK_FILE_STATUS)) {
             responseVo = checkFileStatus(fileForm);
         } else if (fileForm.getType().equals(FileFormType.UPLOAD_FILE_ONLY)) {
             responseVo = uploadChunkFIle(chunk, fileForm, uploadDir);
         } else {
             //TODO 其他类型表单处理
-            responseVo = new FileChunkUploadReponse();
+            responseVo = new FileChunkUploadResponse();
         }
         return responseVo;
     }
@@ -73,9 +73,9 @@ public class FileUploadService {
      * 上传失败时，nextIndex为当前分块的index，即上传当前分块；当nextIndex大于总分片大小时，上传完成
      * @date: 2019/9/23 17:45
      */
-    public FileChunkUploadReponse checkFileStatus(FileForm fileForm) {
+    public FileChunkUploadResponse checkFileStatus(FileForm fileForm) {
         //返回给前端的表单
-        FileChunkUploadReponse responseVo = new FileChunkUploadReponse();
+        FileChunkUploadResponse responseVo = new FileChunkUploadResponse();
         //文件的md5值
         String md5 = fileForm.getMd5();
         if (FileChunkInfo.keySet().contains(md5)) {
@@ -87,13 +87,13 @@ public class FileUploadService {
             //该分块是否已上传成功
             if (chunkIndexs.contains(fileForm.getChunkIndex())) {
                 //文件已经上传成功
-                responseVo = new FileChunkUploadReponse(FileUploadStatus.FILE_UPLOAD_STATUS_SUC, fileForm.getChunkIndex() + 1);
+                responseVo = new FileChunkUploadResponse(FileUploadStatus.FILE_UPLOAD_STATUS_SUC, fileForm.getChunkIndex() + 1);
             } else {
                 //文件上传失败或未上传
-                responseVo = new FileChunkUploadReponse(FileUploadStatus.FILE_UPLOAD_STATUS_FAIL, fileForm.getChunkIndex());
+                responseVo = new FileChunkUploadResponse(FileUploadStatus.FILE_UPLOAD_STATUS_FAIL, fileForm.getChunkIndex());
             }
         } else {
-            responseVo = new FileChunkUploadReponse(FileUploadStatus.FILE_UPLOAD_STATUS_FAIL, fileForm.getChunkIndex());
+            responseVo = new FileChunkUploadResponse(FileUploadStatus.FILE_UPLOAD_STATUS_FAIL, fileForm.getChunkIndex());
         }
         return responseVo;
     }
@@ -104,17 +104,17 @@ public class FileUploadService {
      * @description: 上传文件分片
      * @date: 2019/9/24 10:43
      */
-    public FileChunkUploadReponse uploadChunkFIle(MultipartFile chunk, FileForm fileForm, String uploadDir)  {
-        FileChunkUploadReponse responseVo;
+    public FileChunkUploadResponse uploadChunkFIle(MultipartFile chunk, FileForm fileForm, String chunkPath)  {
+        FileChunkUploadResponse responseVo;
         try {
             //TODO 上传路径怎么制定，上传到web inf目录下，阻止客户端的访问，需要重定向
             //String chunkUploadDir =
-            fileBasicUploadService.realUpload(uploadDir, chunk);
-            responseVo = new FileChunkUploadReponse(FileUploadStatus.FILE_UPLOAD_STATUS_SUC, fileForm.getChunkIndex() + 1);
-            //(String path,String fileName,MultipartFile file)
+            fileBasicUploadService.realUpload(chunkPath, chunk);
+            responseVo = new FileChunkUploadResponse(FileUploadStatus.FILE_UPLOAD_STATUS_SUC, fileForm.getChunkIndex() + 1);
+            //TODO 抛出异常，处理异常的代码块中实现拼接，拼接-任务队列
         } catch (IOException ex) {
             ex.printStackTrace();
-            responseVo = new FileChunkUploadReponse(FileUploadStatus.FILE_UPLOAD_STATUS_FAIL, fileForm.getChunkIndex());
+            responseVo = new FileChunkUploadResponse(FileUploadStatus.FILE_UPLOAD_STATUS_FAIL, fileForm.getChunkIndex());
         }
         return responseVo;
     }

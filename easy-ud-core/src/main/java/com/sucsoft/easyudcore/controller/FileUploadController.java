@@ -1,7 +1,7 @@
 package com.sucsoft.easyudcore.controller;
 
 import com.sucsoft.easyudcore.bean.FileResponse;
-import com.sucsoft.easyudcore.exception.FileUploadException;
+import com.sucsoft.easyudexception.exception.FileUploadException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.sucsoft.easyudcore.service.FileBasicUploadService;
 
-import java.io.IOException;
 import java.util.List;
 
 /**

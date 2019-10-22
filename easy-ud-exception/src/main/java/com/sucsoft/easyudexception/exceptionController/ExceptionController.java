@@ -1,8 +1,8 @@
 package com.sucsoft.easyudexception.exceptionController;
 
-import com.sucsoft.easyudcore.exception.FileStorageException;
-import com.sucsoft.easyudcore.exception.FileUploadException;
-import com.sucsoft.easyudcore.exception.MyFileNotFoundException;
+import com.sucsoft.easyudexception.exception.FileStorageException;
+import com.sucsoft.easyudexception.exception.FileUploadException;
+import com.sucsoft.easyudexception.exception.MyFileNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;

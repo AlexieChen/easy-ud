@@ -4,9 +4,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * @Author: "Chenzx"
- * @Date: 2019/9/20 16:19
- * @Description:
+ * @author : "Chenzx"
+ * @date : 2019/9/20 16:19
  */
 @ApiModel("文件分片数据表")
 public class FileChunkDO {
@@ -69,5 +68,17 @@ public class FileChunkDO {
 
     public void setCompleted(Boolean completed) {
         this.completed = completed;
+    }
+
+    @Override
+    public String toString() {
+        return "FileChunkDO{" +
+                "id='" + id + '\'' +
+                ", sliceMd5='" + sliceMd5 + '\'' +
+                ", md5='" + md5 + '\'' +
+                ", sliceIndex=" + sliceIndex +
+                ", fileId='" + fileId + '\'' +
+                ", completed=" + completed +
+                '}';
     }
 }

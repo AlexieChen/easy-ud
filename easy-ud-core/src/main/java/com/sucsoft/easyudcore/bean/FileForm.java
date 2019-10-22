@@ -7,9 +7,8 @@ import org.springframework.lang.Nullable;
 import java.util.Date;
 
 /**
- * @Author: "Chenzx"
- * @Date: 2019/9/18 13:23
- * @Description:
+ * @author : "Chenzx"
+ * @date : 2019/9/18 13:23
  */
 @ApiModel("文件上传表单")
 public class FileForm {

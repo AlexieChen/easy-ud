@@ -1,7 +1,7 @@
 package com.sucsoft.easyudcore.service;
 
-import com.sucsoft.easyudcore.exception.MyFileNotFoundException;
-import com.sucsoft.easyudcore.util.MultiPartUtil;
+import com.sucsoft.easyudexception.exception.MyFileNotFoundException;
+import com.sucsoft.easyudcore.util.MultiPartFileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -41,7 +41,7 @@ public class FIleBasicDownloadService {
             throw new MyFileNotFoundException("找不到对应文件" + ":" + fileUri);
         }
         //文件名后缀
-        String fileSuffix = MultiPartUtil.fileSuffix(fileUri);
+        String fileSuffix = MultiPartFileUtil.fileSuffix(fileUri);
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource resource = resolver.getResource("file:"+fileUri);
         MediaType mediaType = new MediaType( "application","x-download",Charset.forName("utf-8"));

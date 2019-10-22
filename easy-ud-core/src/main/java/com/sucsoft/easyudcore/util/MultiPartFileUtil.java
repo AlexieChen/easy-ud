@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @Date: 2019/10/8 15:30
  * @Description:
  */
-public class MultiPartUtil {
+public class MultiPartFileUtil {
 
     public static Integer lastIndexOfDot(MultipartFile file) {
         return file.getOriginalFilename().lastIndexOf(".");

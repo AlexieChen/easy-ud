@@ -2,9 +2,9 @@ package com.sucsoft.easyudcore.service;
 
 import com.sucsoft.easyudcore.bean.FileResponse;
 import com.sucsoft.easyudcore.bean.FileUploadStatus;
-import com.sucsoft.easyudcore.exception.FileUploadException;
+import com.sucsoft.easyudexception.exception.FileUploadException;
 import com.sucsoft.easyudcore.util.FilePathUtil;
-import com.sucsoft.easyudcore.util.MultiPartUtil;
+import com.sucsoft.easyudcore.util.MultiPartFileUtil;
 import com.sucsoft.easyudsql.service.FileTypeLimitService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -42,11 +42,11 @@ public class FileBasicUploadService {
      */
     public FileResponse upload(MultipartFile file, String relativePath) throws FileUploadException {
         FileResponse fileResponse;
-    /*        if (!fileTypeLimitService.fileAllowable(file.getOriginalFilename()) && MultiPartUtil.lastIndexOfDot(file) != -1) {
+    /*        if (!fileTypeLimitService.fileAllowable(file.getOriginalFilename()) && MultiPartFileUtil.lastIndexOfDot(file) != -1) {
                 throw new FileUploadException("上传错误：文件类型和后缀名不匹配");
             }*/
         //文件名除去后缀
-        String fileName = MultiPartUtil.fileName(file);
+        String fileName = MultiPartFileUtil.fileName(file);
         //文件由随机生成的id做服务器端文件名，防止重名文件出现
         String path = FilePathUtil.absolutePath(uploadPath, relativePath, file);
         try {
@@ -75,7 +75,7 @@ public class FileBasicUploadService {
         file.transferTo(dest);
         //获得文件的md5值
         String md5 = FileUtil.getFileMD5(dest);
-        String fileName = MultiPartUtil.fileName(file);
+        String fileName = MultiPartFileUtil.fileName(file);
         FileResponse fileResponse = new FileResponse(fileName, path, md5, FileUploadStatus.FILE_UPLOAD_STATUS_SUC);
         fileResponse.setId(UUID.randomUUID().toString());
         return fileResponse;

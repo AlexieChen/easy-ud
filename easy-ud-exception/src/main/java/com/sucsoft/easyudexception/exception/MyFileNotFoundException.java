@@ -1,4 +1,4 @@
-package com.sucsoft.easyudcore.exception;
+package com.sucsoft.easyudexception.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

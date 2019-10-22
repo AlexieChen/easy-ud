@@ -13,7 +13,7 @@ import java.util.UUID;
 public class FilePathUtil {
     public static String absolutePath(String uploadPath,String relativePath ,MultipartFile file) {
         String id = UUID.randomUUID().toString();
-        return  uploadPath + relativePath + File.separator + id + MultiPartUtil.fileSuffix(file);
+        return  uploadPath + relativePath + File.separator + id + MultiPartFileUtil.fileSuffix(file);
     }
 
 }

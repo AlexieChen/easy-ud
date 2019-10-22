@@ -20,6 +20,9 @@ public class FileUploadService {
     @Autowired
     private FileBasicUploadService fileBasicUploadService;
 
+    @Autowired
+    private FileStorageService fileStorageService;
+
     public Map<String, ArrayList<FileChunkDO>> FileChunkInfo;
 
     /**
@@ -104,10 +107,10 @@ public class FileUploadService {
      * @description: 上传文件分片
      * @date: 2019/9/24 10:43
      */
-    public FileChunkUploadResponse uploadChunkFIle(MultipartFile chunk, FileForm fileForm, String chunkPath)  {
+    public FileChunkUploadResponse uploadChunkFIle(MultipartFile chunk, FileForm fileForm, String chunkPath) {
         FileChunkUploadResponse responseVo;
         try {
-            //TODO 上传路径怎么制定，上传到web inf目录下，阻止客户端的访问，需要重定向
+            //TODO 断点续传，无数据库时
             //String chunkUploadDir =
             fileBasicUploadService.realUpload(chunkPath, chunk);
             responseVo = new FileChunkUploadResponse(FileUploadStatus.FILE_UPLOAD_STATUS_SUC, fileForm.getChunkIndex() + 1);
@@ -118,5 +121,4 @@ public class FileUploadService {
         }
         return responseVo;
     }
-    //TODO 拼接文件
 }

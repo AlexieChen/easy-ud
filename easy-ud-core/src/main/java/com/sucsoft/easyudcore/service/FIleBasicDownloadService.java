@@ -5,7 +5,6 @@ import com.sucsoft.easyudcore.bean.FileResponse;
 import com.sucsoft.easyudcore.util.FilePathUtil;
 import com.sucsoft.easyudexception.exception.MyFileNotFoundException;
 import com.sucsoft.easyudcore.util.MultiPartFileUtil;
-import org.apache.tomcat.util.buf.ByteChunk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -33,11 +33,11 @@ public class FileUploadService {
      * @author : ChenZx
      * @date : 2019/9/20 13:10
      */
-    public FileResponse upload(String md5, String uplaodDir, MultipartFile file) throws FileUploadException {
+    public FileResponse upload(String md5, String uploadDir, MultipartFile file) throws FileUploadException {
         if (uploadedBefore(md5)) {
             return fileBasicUploadService.fileInfoMap.get(md5);
         } else {
-            return fileBasicUploadService.upload(file, uplaodDir);
+            return fileBasicUploadService.upload(file, uploadDir);
         }
     }
 

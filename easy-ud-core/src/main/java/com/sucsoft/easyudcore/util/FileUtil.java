@@ -2,6 +2,7 @@ package com.sucsoft.easyudcore.util;
 
 
 import com.sucsoft.easyudcore.bean.FileChunkDO;
+import com.sucsoft.easyudexception.exception.FileUploadException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -46,18 +48,46 @@ public class FileUtil {
             in.close();
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            throw new FileUploadException("获取文件的md5值失败");
         }
         BigInteger bigInt = new BigInteger(1, digest.digest());
         return bigInt.toString(16);
     }
 
-    public static List<String> getChunkMd5(List<FileChunkDO> chunks, Boolean completed) {
+    /**
+     * 截取文件的前1mb获取md5值
+     * @param file : 文件
+     * @author : ChenZx
+     * @date : 2019/9/19 13:28
+     */
+    public static String getTruncatedMD5(File file) {
+        int bufferSize = 1024;
+        if (!file.exists() || !file.isFile()) {
+            return null;
+        }
+        MessageDigest digest;
+        FileInputStream in;
+        byte[] buffer = new byte[bufferSize];
+        try {
+            digest = MessageDigest.getInstance("MD5");
+            in = new FileInputStream(file);
+            digest.update(buffer);
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new FileUploadException("获取文件的md5值失败");
+        }
+        BigInteger bigInt = new BigInteger(1, digest.digest());
+        return bigInt.toString(16);
+    }
+
+    public static List<String> getChunksMd5(List<FileChunkDO> chunks, Boolean completed) {
         Stream<String> x = chunks.stream().filter(chunk -> chunk.getCompleted().equals(completed)).map(FileChunkDO::getMd5);
         return x.collect(Collectors.toList());
     }
 
-    public static List<Integer> getSliceIndexs(List<FileChunkDO> slices, Boolean completed) {
+
+    public static List<Integer> getSliceIndexes(List<FileChunkDO> slices, Boolean completed) {
         Stream<Integer> x = slices.stream().filter(slice -> slice.getCompleted().equals(completed)).map(FileChunkDO::getSliceIndex);
         return x.collect(Collectors.toList());
     }
@@ -112,6 +142,12 @@ public class FileUtil {
      */
     public static void deleteIfExists(String path) throws IOException {
         deleteIfExists(new File(path));
+    }
+    /**
+     * 根据时间生成id
+     */
+    public static String generateID() {
+        return String.valueOf(System.currentTimeMillis());
     }
 
 

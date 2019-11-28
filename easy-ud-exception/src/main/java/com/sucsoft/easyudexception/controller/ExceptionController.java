@@ -1,4 +1,4 @@
-package com.sucsoft.easyudexception.exceptionController;
+package com.sucsoft.easyudexception.controller;
 
 import com.sucsoft.easyudexception.exception.FileStorageException;
 import com.sucsoft.easyudexception.exception.FileUploadException;
@@ -14,9 +14,8 @@ import java.io.UnsupportedEncodingException;
 
 
 /**
- * @Author: "Chenzx"
- * @Date: 2019/10/8 11:10
- * @Description:
+ * @author : "Chenzx"
+ * @date : 2019/10/8 11:10
  */
 @ControllerAdvice
 public class ExceptionController {
@@ -24,10 +23,10 @@ public class ExceptionController {
     private static Logger logger = LoggerFactory.getLogger(ExceptionController.class);
 
     /**
-     * @return:
-     * @author: ChenZx
-     * @description: 下载找不到文件时异常处理
-     * @date: 2019/10/8 11:47
+     * 下载找不到文件时异常处理
+     * @return :
+     * @author : ChenZx
+     * @date : 2019/10/8 11:47
      */
     @ResponseBody
     @ExceptionHandler(MyFileNotFoundException.class)
@@ -37,10 +36,10 @@ public class ExceptionController {
     }
 
     /**
-     * @return:
-     * @author: ChenZx
-     * @description: 文件上传的异常处理
-     * @date: 2019/10/8 14:22
+     * 文件上传的异常处理
+     * @return :
+     * @author : ChenZx
+     * @date : 2019/10/8 14:22
      */
     @ResponseBody
     @ExceptionHandler({FileUploadException.class, FileStorageException.class})
@@ -50,10 +49,10 @@ public class ExceptionController {
     }
 
     /**
-     * @return:
-     * @author: ChenZx
-     * @description: 文件存储的异常处理，目前没用
-     * @date: 2019/10/8 14:23
+     * 文件存储的异常处理，目前没用
+     * @return :
+     * @author : ChenZx
+     * @date : 2019/10/8 14:23
      */
     @ResponseBody
     @ExceptionHandler(value = Exception.class)
@@ -63,10 +62,10 @@ public class ExceptionController {
     }
 
     /**
-     * @return:
-     * @author: ChenZx
-     * @description: 解码方式不支持
-     * @date: 2019/10/8 18:04
+     * 解码方式不支持
+     * @return :
+     * @author : ChenZx
+     * @date : 2019/10/8 18:04
      */
     @ResponseBody
     @ExceptionHandler(value = UnsupportedEncodingException.class)

@@ -32,9 +32,9 @@ import java.util.List;
 
 
 /**
- * @Author: "Chenzx"
- * @Date: 2019/9/25 09:57
- * @Description:
+ * @author : "Chenzx"
+ * @date : 2019/9/25 09:57
+ *
  */
 @Service
 public class FIleBasicDownloadService {
@@ -49,10 +49,10 @@ public class FIleBasicDownloadService {
     /**
      * @return :
      * @author : ChenZx
-     * @description : 基础下载功能
+     * 基础下载功能
      * @date : 2019/9/25 19:23
      */
-    public ResponseEntity<Resource> realDownload(String fileUri, String fileName) throws MyFileNotFoundException, UnsupportedEncodingException {
+    private ResponseEntity<Resource> realDownload(String fileUri, String fileName) throws MyFileNotFoundException, UnsupportedEncodingException {
         File file = new File(fileUri);
         if (!file.exists()) {
             throw new MyFileNotFoundException("找不到对应文件" + ":" + fileUri);
@@ -81,7 +81,7 @@ public class FIleBasicDownloadService {
         FileResponse fileInfo = fileBasicUploadService.fileInfoMap.get(id);
         String fileUri = fileInfo.getUploadPath();
         String fileName = fileBasicUploadService.fileInfoMap.get(id).getFileName();
-        List<ResponseEntity> responseEntities = new ArrayList<ResponseEntity>();
+        List<ResponseEntity> responseEntities = new ArrayList<>();
         int size = 1024 * 1024 * 10;
         try {
             ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
@@ -89,7 +89,7 @@ public class FIleBasicDownloadService {
             long fileSize = resource.getFile().length();
             long sliceCount = fileSize % size > 0 ? fileSize / size + 1 : fileSize / size;
             for (int i = 0; i < sliceCount; i++) {
-                asyncDownload(id, Long.valueOf(i), size);
+                asyncDownload(id,(long) i, size);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -114,7 +114,7 @@ public class FIleBasicDownloadService {
         try {
             ByteArrayResource byteArrayResource;
             RandomAccessFile sourceFile = new RandomAccessFile(fileUri, "r");
-            Long start = index * size;
+            long start = index * size;
             String fileName = FilePathUtil.fileNameWithoutExtension(fileUri);
             String extension = FilePathUtil.fileExtension(fileUri);
             logger.info("开始下载 序号为： " + index + "的分片文件");
@@ -122,12 +122,12 @@ public class FIleBasicDownloadService {
             FileChannel inputChannel = sourceFile.getChannel().position(start);
             ByteBuffer byteBuffer = ByteBuffer.allocate(size);
             inputChannel.read(byteBuffer);
+            //浏览器下载的部分
             byteArrayResource = new ByteArrayResource(byteBuffer.array());
             result.setCompleted(true);
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + URLEncoder.encode(fileName + extension, "utf-8") + "\"");
             httpHeaders.add(HttpHeaders.CONTENT_RANGE, start + "-" + (start + size - 1));
-            MediaType mediaType = new MediaType("application", "x-download", Charset.forName("utf-8"));
         } catch (IOException e) {
             e.printStackTrace();
             logger.error(index + "  序号分片下载失败");

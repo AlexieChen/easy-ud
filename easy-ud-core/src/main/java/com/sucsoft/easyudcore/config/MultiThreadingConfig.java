@@ -18,11 +18,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 @EnableAsync
 public class MultiThreadingConfig implements AsyncConfigurer {
-    @Value("${thread_core_pool_size}")
+    @Value("${ezUd-thread_core_pool_size}")
     int corePoolSize = 5;
-    @Value("${thread_max_pool_size}")
+    @Value("${ezUd-thread_max_pool_size}")
     int maxPoolSize = 10;
-    @Value("${thread_queue_capacity}")
+    @Value("${ezUd-thread_queue_capacity}")
     int queueCapacity = 100;
     @Override
     public Executor getAsyncExecutor() {

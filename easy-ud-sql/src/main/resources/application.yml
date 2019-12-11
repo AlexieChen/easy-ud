@@ -8,7 +8,9 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
   data:
     mongodb:
-     uri: mongodb://localhost:27017
+      port: 27017
+      host: localhost
+      database: fileInfo
 mybatis:
   mapper-locations: classpath:/mybatis/mapper/*.xml
   config-location: classpath:/mybatis/config/mybatis-config.xml

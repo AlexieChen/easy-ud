@@ -38,7 +38,7 @@ import java.util.List;
  */
 @Service
 public class FIleBasicDownloadService {
-    Logger logger = LoggerFactory.getLogger(FIleBasicDownloadService.class);
+    private Logger logger = LoggerFactory.getLogger(FIleBasicDownloadService.class);
     @Value("${ezUd.fileUpload.folder}")
     private String filePath;
     @Value("${ezUd.fileDownload.folder}")
@@ -47,10 +47,10 @@ public class FIleBasicDownloadService {
     private FileBasicUploadService fileBasicUploadService;
 
     /**
-     * @return:
-     * @author: ChenZx
-     * @description: 基础下载功能
-     * @date: 2019/9/25 19:23
+     * @return :
+     * @author : ChenZx
+     * @description : 基础下载功能
+     * @date : 2019/9/25 19:23
      */
     public ResponseEntity<Resource> realDownload(String fileUri, String fileName) throws MyFileNotFoundException, UnsupportedEncodingException {
         File file = new File(fileUri);
@@ -59,16 +59,15 @@ public class FIleBasicDownloadService {
         }
         //文件名后缀
         String fileSuffix = MultiPartFileUtil.fileSuffix(fileUri);
+        //获取资源
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource resource = resolver.getResource("file:" + fileUri);
         MediaType mediaType = new MediaType("application", "x-download", Charset.forName("utf-8"));
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + URLEncoder.encode(fileName + fileSuffix, "utf-8") + "\"");
-        //httpHeaders.add(HttpHeaders.CONTENT_RANGE,"$start +");
         return ResponseEntity.ok()
                 .contentType(mediaType)
                 .headers(httpHeaders)
-                //.header(HttpHeaders.ACCEPT_RANGES,"100-2000")
                 .body(resource);
     }
 
@@ -90,7 +89,7 @@ public class FIleBasicDownloadService {
             long fileSize = resource.getFile().length();
             long sliceCount = fileSize % size > 0 ? fileSize / size + 1 : fileSize / size;
             for (int i = 0; i < sliceCount; i++) {
-                responseEntities.add(asyncDownload(id, Long.valueOf(i), size));
+                asyncDownload(id, Long.valueOf(i), size);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -100,14 +99,14 @@ public class FIleBasicDownloadService {
 
 
     /**
-     * @return : org.springframework.http.ResponseEntity<org.springframework.core.io.Resource>
+     *
      * @author : ChenZx
-     * @description : asyncDownload
+     *  asyncDownload
      * @param  fileId:
      * @date : 2019/11/28 10:18
      */
     @Async
-    public ResponseEntity<Resource> asyncDownload(String fileId, Long index, int size) throws UnsupportedEncodingException {
+    public void asyncDownload(String fileId, Long index, int size)  {
         String fileUri = fileBasicUploadService.fileInfoMap.get(fileId).getUploadPath();
         String id = String.valueOf(System.currentTimeMillis());
         //未分片的原始文件
@@ -129,16 +128,11 @@ public class FIleBasicDownloadService {
             httpHeaders.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + URLEncoder.encode(fileName + extension, "utf-8") + "\"");
             httpHeaders.add(HttpHeaders.CONTENT_RANGE, start + "-" + (start + size - 1));
             MediaType mediaType = new MediaType("application", "x-download", Charset.forName("utf-8"));
-            return ResponseEntity.ok()
-                    .contentType(mediaType)
-                    .headers(httpHeaders)
-                    .body(byteArrayResource);
         } catch (IOException e) {
             e.printStackTrace();
             logger.error(index + "  序号分片下载失败");
             result.setCompleted(false);
         }
-        return ResponseEntity.badRequest().build();
     }
 
 
@@ -163,7 +157,7 @@ public class FIleBasicDownloadService {
             //读取文件
             RandomAccessFile originalFile = new RandomAccessFile(uploadPath, "r");
             //实际的结束位置
-            Long realEndPos = endPos != null ? endPos : originalFile.length();
+            long realEndPos = endPos != null ? endPos : originalFile.length();
             //定位到startPos
             inputChannel = originalFile.getChannel().position(startPos);
             //缓冲区大小,需要小于Integer.MAX_VALUE
@@ -187,6 +181,13 @@ public class FIleBasicDownloadService {
             logger.error("范围为： " + startPos + "-" + endPos + " 的分片下载失败");
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    private HttpHeaders setHeaders(String contentType,String contentRange){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(HttpHeaders.CONTENT_TYPE,contentType);
+        httpHeaders.add(HttpHeaders.CONTENT_RANGE,contentRange);
+        return httpHeaders;
     }
 
 }

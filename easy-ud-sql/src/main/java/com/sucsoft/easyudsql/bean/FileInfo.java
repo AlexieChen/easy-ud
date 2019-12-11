@@ -2,6 +2,7 @@ package com.sucsoft.easyudsql.bean;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.data.annotation.Id;
 import org.springframework.lang.Nullable;
 
 import java.util.Date;
@@ -13,7 +14,9 @@ import java.util.Date;
  * @date 2019/9/18 13:23
  */
 @ApiModel("文件上传表单")
-public class FileInfo {
+public class
+FileInfo {
+    //TODO 移动到common包中
     @ApiModelProperty("文件md5")
     private String md5;
     @ApiModelProperty("时间")
@@ -28,6 +31,7 @@ public class FileInfo {
 
     @ApiModelProperty("文件状态，0未完成，1已完成")
     private Integer fileStatus;
+    @Id
     @ApiModelProperty("id")
     private String id;
 

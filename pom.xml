@@ -17,7 +17,7 @@
     <packaging>pom</packaging>
 
 	<name>easyud</name>
-	<description>上传下载</description>
+	<description>上传下载1</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
